@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+
+		<meta charset="UTF-8">
+		<title>Лабораторна робота №2</title>
+
+
+	</head>
+	<body>
+	
+		<input type="checkbox" id="menu-trigger" class="menu-trigger">
+   <label for="menu-trigger"></label>
+        <div class="menu">
+            <ul class="menu">
+                <li><a class="button" href="index.html">Головна сторінка</a></li>
+                <li><a  class="button_current" href="laba1.html">Лабораторна робота №1</a></li>
+                <li><a  class="button" href="lab2.html">Лабораторна робота №2</a></li>
+                <li><a  class="button" href="lab3.html">Лабораторна робота №3</a></li>
+                <li><a  class="button" href="lab4.html">Лабораторна робота №4</a></li>
+                <li><a  class="button" href="lab5.html">Лабораторна робота №5</a></li>
+                <li><a  class="button" href="lab6.html">Лабораторна робота №6</a></li>
+                
+              </ul>
+            </div>
+			
+	 <div class="content">
+            
+                <p><h2 align="center">Умова задачі</h2></p>
+                
+            </div>
+            <div class="content">
+        <p><h3 align="center">Завдання з лабораторної</h3></p>
+       <img src="laba2/task2.1.png"> 
+	    <img src="laba2/task2.2.png"> 
+        <p><h2 align="center">Аналіз задачі</h2></p>
+		<p>Для виконання завдання ми будемо використовувати алгоритми сортування QuickSort, пошуку BinarySearch, решето Ератосфена для знаходження
+ 		простих чисел, метод бісекції для вирішення рівняння, представленої задачі. Створимо меню завдяки switch case меню для вибору завдань
+		(завдання 1-5 з одновимірними масивами, 6-7 з двомірними масивами,8 рівняння, 9 робота зі строками).
+    
+</p>
+</div>
+<div class="content">
+        <p><h2 align="center">Загальна блок-схема</h2></p>
+		<img src="laba2/scheme2.png">  
+		<p><h3 align="center">Діаграма класу</h3></p>
+        <img src="laba2/diagram2.1.png"> 
+<p><h3 align="center">Поля</h3></p>		
+		<img src="laba2/diagram2.2.png"> 
+		<p><h3 align="center">Методи</h3></p>
+		<img src="laba2/diagram2.3.png"> 
+		
+	
+    </div>
+	
+	
+	 <div class="code">
+        <details>
+            <summary>Код програми</summary>
+        <pre>
+            <code>
+			
+using System;
+using System.Text.Json.Serialization;
+
+namespace Lab2
+{
+    
+    class Program
+    {
+        static Random ranGen = new Random();
+        static int rMin, rMax, matMax;
+        static int size;
+        static int row, col;
+        static int indexI = 0;
+
+        static void Rozdil()
+        {
+            Console.WriteLine("===============================================================================");
+        }
+
+        static void OutputMatrix(int[,] arr)
+        {
+
+            for (int i = 0; i < row; i++)
+            {
+                Console.Write("Студент №" + i + "\t");
+                for (int j = 0; j < col; j++)
+                {
+                    Console.Write(arr[i, j] + "\t");
+                }
+                Console.WriteLine();
+            }
+
+        }
+
+
+        static void OutputArray(int[] arr, int N)
+        {
+            for (int i = 0; i < N; i++)
+            {
+                Console.Write(arr[i] + " |");
+            }
+            Console.WriteLine();
+        }
+
+        static void Swap(ref int x, ref int y)
+        {
+            var t = x;
+            x = y;
+            y = t;
+        }
+        static int[] QuickSort(int[] array, int minIndex, int maxIndex)
+        {
+            if (minIndex >= maxIndex)
+            {
+                return array;
+            }
+
+            var pivotIndex = Partition(array, minIndex, maxIndex);
+            QuickSort(array, minIndex, pivotIndex - 1);
+            QuickSort(array, pivotIndex + 1, maxIndex);
+
+            return array;
+        }
+
+        static int Partition(int[] array, int minIndex, int maxIndex)
+        {
+            var pivot = minIndex - 1;
+            for (var i = minIndex; i < maxIndex; i++)
+            {
+                if (array[i] < array[maxIndex])
+                {
+                    pivot++;
+                    Swap(ref array[pivot], ref array[i]);
+                }
+            }
+
+            pivot++;
+            Swap(ref array[pivot], ref array[maxIndex]);
+            return pivot;
+        }
+        static void Task1(int[] arr, int N)
+        {
+
+            int l = 0;
+            int r = N - 1;
+            Console.WriteLine("Введiть початок дiапазону: ");
+            rMin = int.Parse(Console.ReadLine());
+            Console.WriteLine("Введiть кiнець дiапазону: ");
+            rMax = int.Parse(Console.ReadLine());
+
+
+            for (int i = 0; i < arr.Length; i++)
+            {
+                arr[i] = ranGen.Next(rMin, rMax);
+
+            }
+            Console.WriteLine("Масив до сортування: ");
+            OutputArray(arr, N);
+            QuickSort(arr, l, r);
+            Console.WriteLine("Масив пiсля сортування: ");
+            OutputArray(arr, N);
+
+        }
+
+        static void ReshetoEratosphena(int[] arr2)
+        {
+            for (int i = 0; i < arr2.Length; i++)
+            {
+                arr2[i] = i;
+            }
+
+            for (int i = 2; i < arr2.Length; i++)
+            {
+                for (int j = i * i; j < arr2.Length; j += i)
+                {
+                    arr2[j] = 0;
+                }
+
+            }
+        }
+        static void Task2(int[] arr, int N)
+        {
+            int[] arr2 = new int[rMax + 1];
+            bool flag = false;
+            ReshetoEratosphena(arr2);
+
+            for (int i = 0; i < N; i++)
+            {
+                for (int j = 0; j < arr2.Length; j++)
+                {
+                    if (arr[i] == arr2[j] && arr[i] != 0)
+                    {
+                        Console.WriteLine("Число " + arr[i] + " просте.");
+                        flag = true;
+                    }
+                }
+            }
+
+            if (!flag)
+            {
+                Console.WriteLine("В масивi нема простих чисел.");
+            }
+        }
+
+        static void Task3(int[] arr)
+        {
+            int sum = 0;
+            bool flag = false;
+            for (int i = 0; i < arr.Length; i++)
+            {
+                for (int j = 1; j < arr[i]; j++)
+                {
+                    if (arr[i] % j == 0)
+                    {
+                        sum += j;
+                    }
+                }
+                if (sum == arr[i] && sum > 0)
+                {
+                    Console.WriteLine("Число " + arr[i] + " досконале.");
+                    flag = true;
+                }
+                sum = 0;
+            }
+            if (!flag)
+            {
+                Console.WriteLine("В масивi нема досконалих чисел.");
+            }
+
+        }
+        static void Mersenna(int[] arr3)
+        {
+            for(int i = 4; i < arr3.Length; i*=2)
+            {
+                arr3[i] = i - 1;
+            }
+        }
+
+        static void Task4(int[] arr)
+        {
+            int[] arr3 = new int[rMax+1];
+            bool flag = false;
+            Mersenna(arr3);
+            for (int i = 0; i < arr.Length; i++)
+            {
+               for(int j = 0; j <arr3.Length; j++)
+               {
+                    
+                    if (arr[i] == arr3[j] && arr[i]!=0)
+                    {
+                        Console.WriteLine("Число Мерсенна " + arr[i]);
+                        flag = true;
+                        
+                    }
+               }
+
+               
+            }
+            if (!flag)
+            {
+                Console.WriteLine("В масивi нема чисел Мерсенна.");
+            }
+        }
+
+            static void Task5(int[] arr)
+            {
+
+                bool flag = false;
+                int l = 0;
+                int r = arr.Length - 1;
+                int mid;
+                Console.WriteLine("Введiть елемент, який хочете знайти: ");
+                int key = int.Parse(Console.ReadLine());
+
+                while (l <= r)
+                {
+                    mid = (l + r) / 2;
+
+                    if (arr[mid] == key)
+                    {
+                        Console.WriteLine("Iндекс: " + mid);
+                        flag = true;
+                    }
+                    if (arr[mid] > key) r = mid - 1;
+                    else l = mid + 1;
+                }
+
+                if (!flag) Console.WriteLine("Такого елемента в масивi нема ");
+
+
+            }
+
+            static void MiddleSum(int[,] arr)
+            {
+                double res = 0;
+                for (int j = 0; j < col; j++)
+                {
+                    double sum = 0;
+                    for (int i = 0; i < row; i++)
+                    {
+                        sum += arr[i, j];
+                        res = sum / row;
+                    }
+                    Console.WriteLine("~~~Середнє значення пропускiв~~~");
+                    Console.WriteLine("з дисциплiни №" + j + " = " + res);
+                }
+
+            }
+
+            static void StudentMax(int[,] arr)
+            {
+
+                int Max = 0;
+                for (int i = 0; i < row; i++)
+                {
+                    int studentMax = 0;
+                    for (int j = 0; j < col; j++)
+                    {
+                        studentMax += arr[i, j];
+
+                    }
+                    if (studentMax > Max)
+                    {
+                        Max = studentMax;
+                        indexI = i;
+                    }
+
+                }
+                Console.WriteLine("Студент №" + indexI + " який пропустив найбiльше занять, а саме " + Max);
+                Max = 0;
+            }
+
+            static void Task6(int[,] arr)
+            {
+                int Min = int.MaxValue, indexJ = 0;
+                Console.WriteLine("Введiть кінець діапазону: ");
+                matMax = int.Parse(Console.ReadLine());
+                for (int i = 0; i < row; i++)
+                {
+                    for (int j = 0; j < col; j++)
+                    {
+                        arr[i, j] = ranGen.Next(0, matMax);
+
+                    }
+
+                }
+                OutputMatrix(arr);
+
+
+                for (int j = 0; j < col; j++)
+                {
+                    int disciplineMin = 0;
+                    for (int i = 0; i < row; i++)
+                    {
+                        disciplineMin += arr[i, j];
+                    }
+                    if (disciplineMin < Min)
+                    {
+                        Min = disciplineMin;
+                        indexJ = j;
+                    }
+
+                }
+
+                Rozdil();
+                Console.WriteLine("Найбiльш вiвдiдана дисциплiна №" + indexJ + " пропустили " + Min + " разiв");
+                StudentMax(arr);
+                MiddleSum(arr);
+            }
+
+            static void Task7(int[,] arr)
+            {
+                StudentMax(arr);
+                Console.WriteLine("==Нова таблиця===");
+                for (int i = indexI; i < row - 1; i++)
+                {
+                    for (int j = 0; j < col; j++)
+                    {
+                        arr[i, j] = arr[i + 1, j];
+                    }
+                }
+                for (int i = 0; i < row - 1; i++)
+                {
+                    Console.Write("Студент №" + i + "\t");
+                    for (int j = 0; j < col; j++)
+                    {
+                        Console.Write(arr[i, j] + "\t");
+                    }
+                    Console.WriteLine();
+                }
+
+            }
+
+            static double F(double x)
+            {
+                double f;
+                f = (x * x * x) + 2 * x - 4;
+                return f;
+            }
+
+            static void Task8()
+            {
+                double c = 0;
+                double res = 0;
+                double x;
+
+                Console.WriteLine("Рiвняння x^3+2x-4=0");
+                Console.Write("Введiть початок iнтервалу:");
+                double a = double.Parse(Console.ReadLine());
+                Console.WriteLine();
+                Console.Write("Введiть кiнець iнтервалу:");
+                double b = double.Parse(Console.ReadLine());
+                Console.WriteLine();
+                if (F(a) * F(b) == 0)
+                {
+                    Console.WriteLine("Невiрно введенi данi!");
+                    return;
+                }
+                Console.Write("Введiть точнiсть:");
+                double e = double.Parse(Console.ReadLine());
+                Console.WriteLine();
+
+                while (Math.Abs(b - a) > e)
+                {
+                    c = (a + b) / 2;
+                    if (F(a) * F(c) < 0)
+                    {
+                        b = c;
+                    }
+                    else
+                    {
+                        a = c;
+                    }
+
+                }
+                x = (a + b) / 2;
+                Rozdil();
+                Console.WriteLine("x = " + x);
+                res = F(x);
+                Console.WriteLine("Значення у рiвняннi = " + res);
+            }
+
+            static void Task9()
+            {
+                Console.Write("Введiть текст:");
+                string text = Console.ReadLine();
+                Console.WriteLine();
+
+                string[] words = text.Split(new char[] { ' ', ',', '.' }, StringSplitOptions.RemoveEmptyEntries);
+                int count = 0, max = 0;
+                string maxWord = null;
+                foreach (string word in words)
+                {
+                    if (word.Length > max)
+                    {
+                        max = word.Length;
+                        maxWord = word;
+                    }
+                    count++;
+
+                }
+                var chArr = text.ToCharArray();
+                for (int i = 0; i < chArr.Length; i++)
+                {
+                    if (chArr[i] == '.')
+                    {
+                        chArr[i + 1] = char.ToUpper(chArr[i + 1]);
+                    }
+                }
+                text = new string(chArr);
+                Rozdil();
+                Console.WriteLine("Кiлькiсть слiв: " + count);
+                Console.WriteLine("Найдовше слово: " + maxWord);
+                Console.WriteLine("Кiлькiсть символiв найдовшого слова: " + max);
+                Console.WriteLine("Строка пiсля виконання програми: " + text);
+            }
+
+            static void Main(string[] args)
+            {
+
+                Console.WriteLine("Маношина Веронiка\nВарiант 17\nВiк:18\nГрупа IПЗ-11 курс 1\nveronkievipad@gmail.com\n");
+                Console.WriteLine("==Завдання==\n1)З одновимiрним масивом №1-5\n2)З двомiрним масивом №6-7\n3)Iнше №8-9");
+                Console.Write("Оберiть завдання: ");
+                int task = int.Parse(Console.ReadLine());
+                if (task == 1)
+                {
+                    Console.Write("Введiть розмiр масиву: ");
+                    size = int.Parse(Console.ReadLine());
+
+                }
+                int[] array = new int[size];
+                if (task == 2)
+                {
+                    Console.Write("!Введiть розмiр матрицi ");
+                    Console.Write("Рядки: ");
+                    Console.WriteLine();
+                    row = int.Parse(Console.ReadLine());
+                    Console.Write("Стовпцi: ");
+                    col = int.Parse(Console.ReadLine());
+                    Console.WriteLine();
+                }
+                int[,] matrix = new int[row, col];
+
+                while (true)
+                {
+
+                    Console.WriteLine("Введiть номер завдання: ");
+                    int chs = Convert.ToInt32(Console.ReadLine());
+
+
+                    switch (chs)
+                    {
+
+                        case 1:
+
+                            Task1(array, size);
+                            break;
+
+                        case 2:
+                            Task2(array, size);
+                            break;
+
+                        case 3:
+                            Task3(array);
+                            break;
+
+                        case 4:
+                            Task4(array);
+                            break;
+
+                        case 5:
+                            Task5(array);
+                            break;
+
+                        case 6:
+                            Task6(matrix);
+                            break;
+
+                        case 7:
+                            Task7(matrix);
+                            break;
+                        case 8:
+                            Task8();
+                            break;
+                        case 9:
+                            Task9();
+                            break;
+
+                    }
+
+                    Console.WriteLine("Продовжити виконання програми?Введiть 1 або 0\n(1 - так, 0 - нi): ");
+                    int stop = Convert.ToInt32(Console.ReadLine());
+
+                    if (stop == 0)
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+
+    }
+
+
+               
+            </code>
+        </pre>
+    </details>
+    </div>
+	
+	
+	
+	
+	 <div class="content"> 
+        <p><h2 align="center">Виконання програми</h2></p> 
+        <p><h4 align="center">Виконання завдання №1</h4></p>           
+            <img src="laba2/result2.1.png">
+            <p><h4 align="center">Виконання завдання №2</h4></p>                         
+            <img src="laba2/result2.2.png"> 
+			 <p><h4 align="center">Виконання завдання №3</h4></p>                         
+            <img src="laba2/result2.3.png"> 
+			 <p><h4 align="center">Виконання завдання №4</h4></p>                         
+            <img src="laba2/result2.4.png"> 
+			 <p><h4 align="center">Виконання завдання №5</h4></p>                         
+            <img src="laba2/result2.5.png"> 
+			<p><h4 align="center">Виконання завдання №6</h4></p>                         
+            <img src="laba2/result2.6.png"> 
+			<p><h4 align="center">Виконання завдання №7</h4></p>                         
+            <img src="laba2/result2.7.png"> 
+			<p><h4 align="center">Виконання завдання №8</h4></p>                         
+            <img src="laba2/result2.8.png"> 
+			<p><h4 align="center">Виконання завдання №9</h4></p>                         
+            <img src="laba2/result2.9.png"> 
+                  
+    </div>
+    
+    
+    
+    <div class="content">  
+        <p><h2 align="center">Перевірка достовірності</h2></p>
+        <p><h4 align="center">Перевірка першої частини завдання №6</h4></p>         
+        <img src="laba2/perevirka2.6.1.png"> 
+		 <p><h4 align="center">Перевірка другої частини завдання №6</h4></p>  
+		 <img src="laba2/perevirka2.6.2.png"> 
+<p><h4 align="center">Перевірка завдання №8</h4></p>         
+         <img src="laba2/perevirka2.8.png"> 		
+    </div>
+    
+    
+                <div class="content">
+                    <p><h2 align="center">Висновок</h2></p>
+                <p>На цій лабораторній роботі я повторила основи програмування, роботу з масивами(алгоритми пошуку та сортування, видалення рядків) 
+				роботу зі строками у С#.
+                </p>
+                </div>
+            </div>
+		
+
+
+	</body>
+
+
+
+</html>

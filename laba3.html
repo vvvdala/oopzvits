@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+
+		<meta charset="UTF-8">
+		<title>Лабораторна робота №3</title>
+
+
+	</head>
+	<body>
+	
+		<input type="checkbox" id="menu-trigger" class="menu-trigger">
+   <label for="menu-trigger"></label>
+        <div class="menu">
+            <ul class="menu">
+                <li><a class="button" href="index.html">Головна сторінка</a></li>
+                <li><a  class="button_current" href="laba1.html">Лабораторна робота №1</a></li>
+                <li><a  class="button" href="laba2.html">Лабораторна робота №2</a></li>
+                <li><a  class="button" href="laba3.html">Лабораторна робота №3</a></li>
+                <li><a  class="button" href="lab4.html">Лабораторна робота №4</a></li>
+                <li><a  class="button" href="lab5.html">Лабораторна робота №5</a></li>
+                <li><a  class="button" href="lab6.html">Лабораторна робота №6</a></li>
+                
+              </ul>
+            </div>
+			
+	 <div class="content">
+            
+                <p><h2 align="center">Умова задачі</h2></p>
+                
+            </div>
+            <div class="content">
+        <p><h3 align="center">Завдання з лабораторної</h3></p>
+       <img src="laba3/task3.1.png"> 
+	    <img src="laba3/task3.2.png"> 
+        <p><h2 align="center">Аналіз задачі</h2></p>
+		<p>Для початку ми повинні створити класи Patient, Doctor та статичний Illness та визначити поля. Створюємо в класі Patient конструктор без параметрів, а в Doctor
+		конструктор з параметрами, та в кожному з них визначаємо властивості (get;set;). Створюємо відкриті методи в класах Patient і Doctor, інформація з яких буде записуватися в текстові файли.
+		Після цього додаємо до класу Patient вбудований клас MedicalCard зі своїми полями та методами та модифікуємо клас Doctor, як частковий за допомогою
+		partial, в одній частині буде метод EnterPrint, в іншій Diagnose. До статичного класу додаємо виконані завдання з 2-ої лабораторної.
+    
+</p>
+</div>
+<div class="content">
+        <p><h2 align="center">Діаграма класу</h2></p>
+		<img src="laba3/diagram.png">  
+		<p><h3 align="center">Клас Program</h3></p>
+        <img src="laba3/main.png"> 
+<p><h3 align="center">Клас Patient</h3></p>
+		<img src="laba3/patient.png"> 
+		<p><h3 align="center">Клас Doctor</h3></p>
+		<img src="laba3/doctor.png"> 
+		<p><h3 align="center">Клас Illness</h3></p>
+		<img src="laba3/illness.png"> 
+		
+	
+    </div>
+	
+	
+	 <div class="code">
+        <details>
+            <summary>Код програми</summary>
+        <pre>
+            <code>
+			
+using OOP_Lab_3;
+using System.Text;
+using System;
+using System.Xml.Linq;
+using static System.Net.Mime.MediaTypeNames;
+
+namespace OOP_Lab3
+{
+    class Program
+    {
+       
+        static void Main(string[] args)
+        {
+            Console.OutputEncoding=System.Text.Encoding.Unicode;
+            
+            Patient patient1 = new Patient();
+            Doctor doctor1 = new Doctor("", "", "", "");
+            Patient.MedicalCard medicalCard = new Patient.MedicalCard("","", "", "", "","");
+
+            Console.WriteLine("Маношина Веронiка\nВарiант 17\nВiк:18\nГрупа IПЗ-11 курс 1\nveronkievipad@gmail.com\n");
+
+            while (true)
+            {
+                Console.Write("В ролі кого ви сьогодні? Пацієнт(1) чи доктор(2)? Може, хочете переглянути завдання з 2-ої лабораторної?(3)\n");
+                Console.Write("Введіть: ");
+                int chs = int.Parse(Console.ReadLine());
+                Console.WriteLine();
+                switch (chs)
+                {
+                    case 1:
+                        patient1.EnterPrint();
+                        patient1.visitDoctor();
+                        string name=patient1.firstName;
+                        string lastname = patient1.lastName;
+                        string passport = patient1.passport;
+                        Console.WriteLine("Чи хочете змінити медкарту? Введiть 1 або 0\n(1 - так, 0 - нi):");
+                        int choice = int.Parse(Console.ReadLine());
+                        if (choice == 1)
+                        {
+                           medicalCard.Diagnose(name,lastname,passport);
+                        }
+                        if (choice == 0) Console.WriteLine("Ваша медкарта без змін");
+                        break;
+
+                    case 2:
+                        doctor1.EnterPrint();
+                        doctor1.Diagnose();
+                        doctor1.HistoryIllnessAsync();
+                        break;
+
+                    case 3:
+                        Illness.Begin();
+                        break;
+                }
+
+                Console.WriteLine("Продовжити виконання програми?Введiть 1 або 0\n(1 - так, 0 - нi): ");
+                int stop = Convert.ToInt32(Console.ReadLine());
+
+                if (stop == 0)
+                {
+                    break;
+                }
+            }
+        }
+    }
+}
+
+Patient
+
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Diagnostics.Contracts;
+using System.IO;
+using System.Linq;
+using System.Runtime.ExceptionServices;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
+
+namespace OOP_Lab_3
+{
+    class Patient
+    {
+        private string FirstName;
+        private string LastName;
+        private string Passport;
+        private string Adress;
+        private string Number;
+        
+        public Patient()
+        {
+            FirstName = "";
+            LastName = "";
+            Passport = "";
+            Adress = "";
+            Number = "";
+        }
+
+
+        public string firstName
+        {
+            get { return FirstName; }
+            set { FirstName = value; }
+        }
+
+        public string lastName
+        {
+            get { return LastName; }
+            set { LastName = value; }
+        }
+        public string passport
+        {
+            get { return Passport; }
+            set { Passport = value; }
+        }
+
+        public string adress
+        {
+            get { return Adress; }
+            set { Adress = value; }
+        }
+
+        public string number
+        {
+            get { return Number; }
+            set { Number = value; }
+        }
+
+        public bool isTrueFormate(string phoneNumber, string pattern)
+        {
+            return Regex.IsMatch(phoneNumber, pattern);
+        }
+
+       
+
+        public async void EnterPrint()
+        {
+            string path = "patient.txt";
+            Console.WriteLine("Вітаю, шановний пацієнте! Введіть всі необхідні дані для Вашого запису до лікаря.");
+            
+            Console.Write("Ваше ім'я: ");
+            firstName = Console.ReadLine();
+            Console.WriteLine();
+
+            Console.Write("Ваше прізвище: ");
+            lastName = Console.ReadLine();
+            Console.WriteLine();
+
+            Console.Write("Ваш номер паспорту (9 цифр): ");
+            passport = Console.ReadLine();
+
+            const string patternPassport = @"[0-9]{9}";
+            if (!isTrueFormate(passport, patternPassport))
+            {
+                Console.WriteLine("Невірно! Cпробуйте ще раз");
+                Process.GetCurrentProcess().Kill();
+            }
+            Console.WriteLine();
+
+            Console.Write("Ваш номер телефону: +380-");
+            number = Console.ReadLine();
+
+            const string patternNumber = @"[1-9]{2}-[0-9]{3}-[0-9]{2}-[0-9]{2}";
+            if (!isTrueFormate(number,patternNumber))
+            {
+                Console.WriteLine("Невірно! Cпробуйте ще раз");
+                Process.GetCurrentProcess().Kill();
+            }
+            Console.WriteLine();
+
+            Console.Write("Ваша адреса: ");
+            adress = Console.ReadLine();
+            Console.WriteLine();
+
+           
+            using (StreamWriter writer = new StreamWriter(path, false))
+            {
+                await writer.WriteLineAsync("Iм'я: " + firstName);
+                await writer.WriteLineAsync("Прізвище: " + lastName);
+                await writer.WriteLineAsync("Номер паспорту:" + passport);
+                await writer.WriteLineAsync("Номер телефону: +380" + number);
+                await writer.WriteLineAsync("Адреса: " + adress);
+            }
+
+            using (StreamReader reader = new StreamReader(path))
+            {
+                string text = await reader.ReadToEndAsync();
+                Console.WriteLine("==Ваші дані====");
+                Console.WriteLine(text);
+            }
+
+        }
+
+        public void visitDoctor()
+        {
+            Console.WriteLine("==Оберіть зручний час прийому для лікаря===");
+            Console.WriteLine("1)Понеділок 12:10");
+            Console.WriteLine("2)Середа 14:30");
+            Console.WriteLine("3)Середа 16:30");
+            Console.WriteLine("4)П'ятниця 12:30");
+            int chs=int.Parse(Console.ReadLine());
+
+            switch (chs)
+            {
+                case 1:
+                    Console.WriteLine("Ви записані на понеділок 12:10");
+                    break;
+
+                case 2:
+                    Console.WriteLine("Ви записані на середа 14:30");
+                    break;
+
+                case 3:
+                    Console.WriteLine("Ви записані на середа 16:30");
+                    break;
+
+                case 4:
+                    Console.WriteLine("Ви записані на п'ятниця 12:30");
+                    break;
+
+            }
+
+            
+
+            Console.WriteLine("Оберіть симптоми, які Вас непокоють");
+            Console.WriteLine("1)Кашель");
+            Console.WriteLine("2)Нежить");
+            Console.WriteLine("3)Висока температура");
+            Console.WriteLine("4)Біль у горлі");
+            int index;
+            int sum = 0,count=0;
+            
+            while (true&&count!=4)
+            {
+                index = int.Parse(Console.ReadLine());
+
+                if(index == 1) sum += 150;
+
+                if (index == 2) sum += 100;
+
+                if (index == 3) sum += 250;
+
+                if (index == 4) sum += 200;
+
+                Console.WriteLine("Більше ніяких симптомів? Введiть 1 або 0\n(1 - так, 0 - нi): ");
+                int stop = Convert.ToInt32(Console.ReadLine());
+                count++;
+                if (stop == 1)
+                {
+                    break;
+                }
+            }
+            Console.WriteLine("===================================");
+            Console.WriteLine("Приблизна ціна лікування = "+sum);
+
+        }
+
+        public class MedicalCard
+        {
+            public string Name;
+            public string Surname;
+            public string Diagnose1;
+            public string Medicaments1;
+            public string Analysis;
+            public string Plan;
+
+            public MedicalCard(string name, string surname, string diagnose, string medicaments, string analysis, string plan)
+            {
+                Name = name;
+                Surname = surname;
+                Diagnose1 = diagnose;
+                Medicaments1 = medicaments;
+                Analysis = analysis;
+                Plan = plan;
+            }
+
+
+            
+            public async void Diagnose(string name,string name2,string pasport)
+            {
+                string path1 = "history.txt";
+
+                Name = name;
+                Surname =name2;
+                string pasp = pasport;
+
+                Console.WriteLine("Діагноз: ");
+                Diagnose1 = Console.ReadLine();
+                Console.WriteLine("Призначте ліки через пробіл: ");
+                Medicaments1 = Console.ReadLine();
+
+                using (StreamWriter writer = new StreamWriter(path1, false))
+                {
+                    await writer.WriteLineAsync("Ім'я: " + Name);
+                    await writer.WriteLineAsync("Прізвище: " + Surname);
+                    await writer.WriteLineAsync("Діагноз: " + Diagnose1);
+                    await writer.WriteLineAsync("Призначені ліки:" + Medicaments1);
+
+                }
+                DescribeDiagnose(pasp);
+
+
+
+            }
+            public async void DescribeDiagnose(string pasp)
+            {
+                string path = "history.txt";
+
+                Console.WriteLine("План лікування вдома(1) чи госпіталізація(2)?");
+                int chs = int.Parse(Console.ReadLine());
+                Console.WriteLine("Чи потрібні додаткові аналізи? Так(1) чи ні(2)?");
+                int chs1 = int.Parse(Console.ReadLine());
+                if (chs == 1)
+                {
+                    Plan = "Вдома";
+                }
+                else
+                {
+                    Plan = "Госпіталізація";
+                }
+
+                if (chs1 == 1)
+                {
+                    Analysis = "Потрібні";
+                }
+                else
+                {
+                    Analysis = "Не потрібні";
+                }
+                Console.WriteLine("Введіть симптоми, які вас непокоють зараз:");
+                string symp = Console.ReadLine();
+                using (StreamWriter writer = new StreamWriter(path, true))
+                {
+                    await writer.WriteLineAsync("План лікування:" + Plan);
+                    await writer.WriteLineAsync("Додаткові аналізи: " + Analysis);
+                    await writer.WriteLineAsync("Cимптоми: " + symp);
+                    await writer.WriteLineAsync("Паспортні дані: "+pasp );
+
+                }
+                using (StreamReader reader = new StreamReader(path))
+                {
+                    string text = await reader.ReadToEndAsync();
+                    Console.WriteLine("==Ваша нова медкарта====");
+                    Console.WriteLine(text);
+                }
+
+            }
+        }   
+    }
+}
+
+Doctor
+
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace OOP_Lab_3
+{
+    partial class Doctor
+    {
+        private string FirstName;
+        private string LastName;
+        private string Qualification;
+        private string Specialization;
+
+        public Doctor(string firstName, string lastName, string qualification, string specialization)
+        {
+            FirstName = firstName;
+            LastName = lastName;
+            Qualification = qualification;
+            Specialization = specialization;
+        }
+
+        public string firstName
+        {
+            get { return FirstName; }
+            set { FirstName = value; }
+        }
+
+        public string lastName
+        {
+            get { return LastName; }
+            set { LastName = value; }
+        }
+
+        public string qualification
+        {
+            get { return Qualification; }
+            set { Qualification = value; }
+        }
+
+        public string specialization
+        {
+            get { return Specialization; }
+            set { Specialization = value; }
+        }
+
+
+        public async void EnterPrint()
+        {
+            string path = "doctor.txt";
+            Console.WriteLine("Вітаю в особистому кабінеті лікаря! Заповніть Ваші дані.");
+            Console.Write("Ваше ім'я: ");
+            FirstName = Console.ReadLine();
+            Console.WriteLine();
+
+            Console.Write("Ваше прізвище: ");
+            LastName = Console.ReadLine();
+            Console.WriteLine();
+
+            Console.Write("Ваша кваліфікація: ");
+            Qualification = Console.ReadLine();
+            Console.WriteLine();
+
+            Console.Write("Ваша спеціалізація: ");
+            Specialization = Console.ReadLine();
+            Console.WriteLine();
+           
+            using (StreamWriter writer = new StreamWriter(path, false))
+            {
+                await writer.WriteLineAsync("Iм'я: " + FirstName);
+                await writer.WriteLineAsync("Прізвище: " + LastName);
+                await writer.WriteLineAsync("Кваліфікація: " + Qualification);
+                await writer.WriteLineAsync("Спеціалізація:" + Specialization);
+               
+            }
+
+            using (StreamReader reader = new StreamReader(path))
+            {
+                string text = await reader.ReadToEndAsync();
+                Console.WriteLine("==Ваші дані====");
+                Console.WriteLine(text);
+            }
+
+
+        }
+
+        public void Diagnose()
+        {
+            string path = "diagnos.txt";
+            List<string> sympthoms = new List<string>();
+
+            Console.Write("Введіть 2 симптоми : ");
+            while (true|| sympthoms.Count!=2)
+            {
+                string symp = Console.ReadLine();
+                sympthoms.Add(symp);
+                Console.WriteLine("Більше ніяких симптомів? Введiть 1 або 0\n(1 - так, 0 - нi): ");
+                int stop = Convert.ToInt32(Console.ReadLine());
+                if (stop == 1)
+                {
+                    break;
+                }
+            }
+
+            string[] readText=File.ReadAllLines(path);
+            int count = 0,indexText=0;
+            
+            for(int i=0;i< sympthoms.Count; i++)
+            {
+                for(int j = 0; j < readText.Length; j++)
+                {
+                    if (sympthoms[i] == readText[j])
+                    {
+                        count++;
+                       
+                        if (j > indexText)
+                        {
+                            indexText = j;
+                        }
+                    }
+                }
+            }
+
+            if (count == 2)
+            {
+                
+               Console.WriteLine("Можливий діагноз: "+readText[indexText-2]);
+               nameIllness = readText[indexText - 2];
+
+            }
+            else Console.WriteLine("Діагноз не знайдено");
+            
+        }
+
+       
+
+          
+        
+    }
+    partial class Doctor {
+
+        static string nameIllness;
+
+        public async void HistoryIllnessAsync()
+        {
+            string path = "historyillness.txt";
+
+            Console.WriteLine("Діагноз: " + nameIllness);
+            Console.WriteLine("План лікування вдома(1) чи госпіталізація(2)?");
+            int chs = int.Parse(Console.ReadLine());
+            Console.WriteLine("Чи потрібні додаткові аналізи? Так(1) чи ні(2)?");
+            int chs1 = int.Parse(Console.ReadLine());
+            Console.WriteLine("Призначте ліки через пробіл: ");
+            string medicaments = Console.ReadLine();
+
+            string plan, analysis;
+            
+            if (chs == 1)
+            {
+                plan = "Вдома";
+            }
+            else
+            {
+                plan = "Госпіталізація";
+            }
+
+            if (chs1 == 1)
+            {
+                analysis = "Потрібні";
+            }
+            else
+            {
+                analysis = "Не потрібні";
+            }
+
+            using (StreamWriter writer = new StreamWriter(path, false))
+            {
+                await writer.WriteLineAsync("Діагноз: " + nameIllness);
+                await writer.WriteLineAsync("План лікування:" + plan);
+                await writer.WriteLineAsync("Додаткові аналізи: " + analysis);
+                await writer.WriteLineAsync("Призначені ліки:" + medicaments);
+
+            }
+
+
+        }
+
+
+
+    }
+}
+
+Illness
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
+
+namespace OOP_Lab_3
+{
+    public static class Illness
+    {
+
+        
+        static Random ranGen = new Random();
+        static int rMin, rMax, matMax;
+        static int size;
+        static int row, col;
+        static int indexI = 0;
+
+        static void Rozdil()
+        {
+            Console.WriteLine("===============================================================================");
+        }
+
+        static void OutputMatrix(int[,] arr)
+        {
+
+            for (int i = 0; i < row; i++)
+            {
+                Console.Write("Студент №" + i + "\t");
+                for (int j = 0; j < col; j++)
+                {
+                    Console.Write(arr[i, j] + "\t");
+                }
+                Console.WriteLine();
+            }
+
+        }
+
+
+        static void OutputArray(int[] arr,int N)
+        {
+            for (int i = 0; i < N; i++)
+            {
+                Console.Write(arr[i] + " |");
+            }
+            Console.WriteLine();
+        }
+        static void ReshetoEratosphena(int[] arr2)
+        {
+            for (int i = 0; i < arr2.Length; i++)
+            {
+                arr2[i] = i;
+            }
+
+            for (int i = 2; i < arr2.Length; i++)
+            {
+                for (int j = i * i; j < arr2.Length; j += i)
+                {
+                    arr2[j] = 0;
+                }
+
+            }
+        }
+
+        static void Task1(int[] arr, int N)
+        {
+
+            int l = 0;
+            int r = N - 1;
+            Console.WriteLine("Введiть початок дiапазону: ");
+            rMin = int.Parse(Console.ReadLine());
+            Console.WriteLine("Введiть кiнець дiапазону: ");
+            rMax = int.Parse(Console.ReadLine());
+
+
+            for (int i = 0; i < arr.Length; i++)
+            {
+                arr[i] = ranGen.Next(rMin, rMax);
+
+            }
+            Console.WriteLine("Масив до сортування: ");
+            OutputArray(arr, N);
+            Array.Sort(arr);
+            Console.WriteLine("Масив пiсля сортування: ");
+            OutputArray(arr, N);
+
+        }
+        static void Task2(int[] arr,int N)
+        {
+           
+
+            int[] arr2 = new int[rMax + 1];
+            bool flag = false;
+            ReshetoEratosphena(arr2);
+
+            for (int i = 0; i < N; i++)
+            {
+                for (int j = 0; j < arr2.Length; j++)
+                {
+                    if (arr[i] == arr2[j] && arr[i] != 0)
+                    {
+                        Console.WriteLine("Число " + arr[i] + " просте.");
+                        flag = true;
+                    }
+                }
+            }
+
+            if (!flag)
+            {
+                Console.WriteLine("В масивi нема простих чисел.");
+            }
+        }
+
+        static void MiddleSum(int[,] arr)
+        {
+            double res = 0;
+            for (int j = 0; j < col; j++)
+            {
+                double sum = 0;
+                for (int i = 0; i < row; i++)
+                {
+                    sum += arr[i, j];
+                    res = sum / row;
+                }
+                Console.WriteLine("~~~Середнє значення пропускiв~~~");
+                Console.WriteLine("з дисциплiни №" + j + " = " + res);
+            }
+
+        }
+
+        static void StudentMax(int[,] arr)
+        {
+
+            int Max = 0;
+            for (int i = 0; i < row; i++)
+            {
+                int studentMax = 0;
+                for (int j = 0; j < col; j++)
+                {
+                    studentMax += arr[i, j];
+
+                }
+                if (studentMax > Max)
+                {
+                    Max = studentMax;
+                    indexI = i;
+                }
+
+            }
+            Console.WriteLine("Студент №" + indexI + " який пропустив найбiльше занять, а саме " + Max);
+            Max = 0;
+        }
+
+        static void Task6(int[,] arr)
+        {
+            int Min = int.MaxValue, indexJ = 0;
+            Console.WriteLine("Введiть кінець діапазону: ");
+            matMax = int.Parse(Console.ReadLine());
+            for (int i = 0; i < row; i++)
+            {
+                for (int j = 0; j < col; j++)
+                {
+                    arr[i, j] = ranGen.Next(0, matMax);
+
+                }
+
+            }
+            OutputMatrix(arr);
+
+
+            for (int j = 0; j < col; j++)
+            {
+                int disciplineMin = 0;
+                for (int i = 0; i < row; i++)
+                {
+                    disciplineMin += arr[i, j];
+                }
+                if (disciplineMin < Min)
+                {
+                    Min = disciplineMin;
+                    indexJ = j;
+                }
+
+            }
+
+            Rozdil();
+            Console.WriteLine("Найбiльш вiвдiдана дисциплiна №" + indexJ + " пропустили " + Min + " разiв");
+            StudentMax(arr);
+            MiddleSum(arr);
+        }
+
+        static void Task9()
+        {
+            Console.Write("Введiть текст:");
+            string text = Console.ReadLine();
+            Console.WriteLine();
+
+            string[] words = text.Split(new char[] { ' ', ',', '.' }, StringSplitOptions.RemoveEmptyEntries);
+            int count = 0, max = 0;
+            string maxWord = null;
+            foreach (string word in words)
+            {
+                if (word.Length > max)
+                {
+                    max = word.Length;
+                    maxWord = word;
+                }
+                count++;
+
+            }
+            var chArr = text.ToCharArray();
+            for (int i = 0; i < chArr.Length; i++)
+            {
+                if (chArr[i] == '.')
+                {
+                    chArr[i + 1] = char.ToUpper(chArr[i + 1]);
+                }
+            }
+            text = new string(chArr);
+            Rozdil();
+            Console.WriteLine("Кiлькiсть слiв: " + count);
+            Console.WriteLine("Найдовше слово: " + maxWord);
+            Console.WriteLine("Кiлькiсть символiв найдовшого слова: " + max);
+            Console.WriteLine("Строка пiсля виконання програми: " + text);
+        }
+
+        public static void Begin()
+        {
+            while (true)
+            {
+                Console.Write("Оберіть завдання, яке хочете виповнити: ");
+                int task = int.Parse(Console.ReadLine());
+                Console.WriteLine();
+                
+                if (task == 1)
+                {
+                    Console.WriteLine("==Завдання 2===");
+                    Console.Write("Введiть розмiр масиву: ");
+                    size = int.Parse(Console.ReadLine());
+                    int[] array = new int[size];
+
+                    Task1(array, size);
+                    Task2(array,size);
+
+                }
+
+                if (task == 2)
+                {
+                    Console.WriteLine("==Завдання 6===");
+                    Console.Write("!Введiть розмiр матрицi\n ");
+                    Console.Write("Рядки: ");
+                    Console.WriteLine();
+                    row = int.Parse(Console.ReadLine());
+                    Console.Write("Стовпцi: ");
+                    col = int.Parse(Console.ReadLine());
+                    Console.WriteLine();
+                    int[,] matrix = new int[row, col];
+
+                    Task6(matrix);
+                }
+
+                if (task == 3)
+                {
+                    Console.WriteLine("==Завдання 9===");
+                    Task9();
+                }
+                Console.WriteLine("Продовжити виконання програми?Введiть 1 або 0\n(1 - так, 0 - нi): ");
+                int stop = Convert.ToInt32(Console.ReadLine());
+
+                if (stop == 0)
+                {
+                    break;
+                }
+
+            }
+            
+        }
+    }
+}
+
+
+               
+            </code>
+        </pre>
+    </details>
+    </div>
+	
+	
+	
+	
+	 <div class="content"> 
+        <p><h2 align="center">Виконання програми</h2></p> 
+        <p><h4 align="center">Виконання завдання №1</h4></p>           
+           <p> <img src="laba3/result1.1.png"><p>
+			<img src="laba3/result1.2.png">
+            <p><h4 align="center">Виконання завдання №2</h4></p>                         
+            <p> <img src="laba3/result2.png"><p>
+			 <p><h4 align="center">Виконання завдання №3</h4></p>                         
+             <p> <img src="laba3/result3.png"><p>
+			 <p><h4 align="center">Виконання завдання №4</h4></p>                         
+             <p> <img src="laba3/result4.1.png"><p>
+			 <p> <img src="laba3/result4.1.2.png"><p>
+			 <p> <img src="laba3/result4.2.png"><p>
+			 <p><h4 align="center">Виконання завдання №5</h4></p>                         
+            <p> <img src="laba3/result5.1.png"><p>
+			 <p> <img src="laba3/result5.2.1.png"><p>
+			 <p> <img src="laba3/result5.2.2.png"><p>
+			<p><h4 align="center">Виконання завдання №6</h4></p>                         
+            <p> <img src="laba3/result6.1.1.png"><p>
+			<p> <img src="laba3/result6.1.2.png"><p>
+			 <p> <img src="laba3/result6.2.1.png"><p>
+			 <p> <img src="laba3/result6.2.2.png"><p>
+			<p><h4 align="center">Виконання завдання №7</h4></p>                         
+            <p> <img src="laba3/result7.png"><p>
+			<p><h4 align="center">Виконання завдання №8</h4></p>                         
+            <p> <img src="laba3/result8.1.png"><p>
+			<p> <img src="laba3/result8.2.png"><p>
+			<p><h4 align="center">Виконання завдання №9</h4></p>                         
+            <p> <img src="laba3/result9.1.png"><p>
+			<p> <img src="laba3/result9.2.png"><p>
+			<p> <img src="laba3/result9.3.png"><p>
+			
+    </div>
+    
+    
+    
+    <div class="content">  
+        <p><h2 align="center">Перевірка достовірності</h2></p>
+        <p><h4 align="center">Перевірка завдання №6</h4></p>         
+        <img src="laba3/perevirka6.png"> 
+		 	
+    </div>
+    
+    
+                <div class="content">
+                    <p><h2 align="center">Висновок</h2></p>
+                <p>На цій лабораторній роботі ми навчились працювати з класами. Класи можуть мати різні модифікатори доступи (наприклад public, protected, internal, protected internal, private або 
+private protected), можуть бути вкладенами(класи, що оголошуються в межах іншого класу, тобто в межах фігурних дужок, 
+що обмежують опис класу) та частковими(тобто ми можемо мати кілька файлів з 
+визначенням одного і того самого класу, і при компіляції всі ці визначення будуть 
+скомпільовані в одне.), конструктори можуть бути, як з параметрами та і без параметрів. Також після цієї лабораторної роботи ми вміємо визначати властивості, вони призначені для доступу до внутрішніх змінних (полів) класу чи обчислення деякого значення. 
+Властивості забезпечують зручний та раціональний шлях доступу до внутрішньої змінної у класі. get – аксесор, який використовується для читання значення із внутрішнього поля класу; set - аксесор, що використовується для запису значення у внутрішнє поле класу.
+                </p>
+                </div>
+            </div>
+		
+
+
+	</body>
+
+
+
+</html>
