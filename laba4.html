@@ -1,0 +1,1920 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+
+		<meta charset="UTF-8">
+		<title>Лабораторна робота №4</title>
+
+
+	</head>
+	<body>
+	
+		<input type="checkbox" id="menu-trigger" class="menu-trigger">
+   <label for="menu-trigger"></label>
+        <div class="menu">
+            <ul class="menu">
+                <li><a class="button" href="index.html">Головна сторінка</a></li>
+                <li><a  class="button_current" href="laba1.html">Лабораторна робота №1</a></li>
+                <li><a  class="button" href="laba2.html">Лабораторна робота №2</a></li>
+                <li><a  class="button" href="laba3.html">Лабораторна робота №3</a></li>
+                <li><a  class="button" href="laba4.html">Лабораторна робота №4</a></li>
+                <li><a  class="button" href="lab5.html">Лабораторна робота №5</a></li>
+                <li><a  class="button" href="lab6.html">Лабораторна робота №6</a></li>
+                
+              </ul>
+            </div>
+			
+	 <div class="content">
+            
+                <p><h2 align="center">Умова задачі</h2></p>
+                <p>Завдання лабораторної роботи № 4 передбачають такі дії.
+Завдання 1 вимагає розробку базових і похідних класів з закритими полями та 
+відкритими властивостями.
+Завдання 2 вимагає додавання до базового класу конструкторів з параметрами та 
+без параметрів.
+Завдання 3 вимагає додавання до похідних класів конструкторів з параметрами.
+Завдання 4 передбачає розробку властивостей get, set для доступу до закритих 
+полів класу.
+Завдання 5 передбачає розробку методів виведення на консоль значень полів 
+класу.
+Завдання 6 передбачає розробку методів за сценарієм роботи програми.
+Завдання 7 є другою версією консольного застосунку, що реалізує ієрархію 
+класів у вигляді інтерфейсу та похідних від інтерфейсу класів, що реалізують 
+інтерфейс.
+Завдання 8 є третьою версією консольного застосунку, що реалізує ієрархію 
+класів у вигляді абстрактного базового та похідних класів.
+Завдання 9 є четвертою версією консольного застосунку, що реалізує стандартні 
+інтерфейси.<p>
+            </div>
+            <div class="content">
+        <p><h3 align="center">Завдання з лабораторної</h3></p>
+       <img src="laba4/task4.png">
+        <p><h2 align="center">Аналіз задачі</h2></p>
+		<p>Для виконання цієї лабораторної роботи потрібно опанувати теоретичний матеріал про наслідування, інтерфейс (стандартні інтерфейси) та абстрактні класи.
+Кожний клас (Сircle, Triangle, Polygon) буде спадкоємцем класу GeometricFigure. В кожному case (switch'a) буде три версії виконання програми та 4 версія консольного
+застосунку, яка буде сортувати фігури за площами (в одному завданні за кількістю кутів, а якщо вони обидва дорівнюють 0, то за площами). Виконувати це будемо
+за допомогою IComparable, IComparer, IEnumerable. 
+
+
+
+
+    
+</p>
+</div>
+<div class="content">
+        <p><h2 align="center">Діаграма класів</h2></p>
+		 
+		<p><h3 align="center">Першого консольного застосунку</h3></p>
+        <p><img src="laba4/diagram1.png"><p>
+<p><h3 align="center">Другого консольного застосунку</h3></p>		
+<p><img src="laba4/diagram2.png"><p> 
+<p><h3 align="center">Третього консольного застосунку</h3></p>		
+<p><img src="laba4/diagram3.png"><p> 
+<p><h3 align="center">Четвертого консольного застосунку</h3></p>		
+<p><img src="laba4/diagram4.png"><p> 
+		
+	
+    </div>
+	
+	
+	 <div class="code">
+        <details>
+            <summary>Код програми</summary>
+        <pre>
+            <code>
+			//OOP_Lab4
+			//GeometricFigure.cs
+			using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace OOP_Lab_4
+{
+    class GeometricFigure 
+    {
+        private string Name;
+        private string Type;
+        private double CorX;
+        private double CorY;
+
+        public GeometricFigure(string name, string type, double corX, double corY)
+        {
+            Name = name;
+            Type = type;
+            CorX = corX;
+            CorY = corY;
+        }
+
+        public string name
+        {
+            get { return Name; }
+            set { Name = value; }
+        }
+
+        public string type
+        {
+            get { return Type; }
+            set { Type = value; }
+        }
+        public double corX
+        {
+            get { return CorX; }
+            set { CorX = value; }
+        }
+        public double corY
+        {
+            get { return CorY; }
+            set { CorY = value; }
+        }
+
+        public int AreaG { get; internal set; }
+
+        public void Display()
+        {
+            Console.WriteLine("Назва фігури = " + name);
+            Console.WriteLine("Координата Х = " + corX);
+            Console.WriteLine("Координата Y = " + corY);
+        }
+       
+    }
+
+    
+}
+
+//Polygon.cs
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace OOP_Lab_4
+{
+    class Polygon:GeometricFigure
+    {
+        private int NumberVertices;
+        private double LengthSide;
+        private double Apofema;
+        private double CorX2;
+        private double CorY2;
+
+        public Polygon(string name, string type, double corX, double corY,int numberVertices, double lengthSide, double apofema, double corX2, double corY2) : base(name, type, corX, corY)
+        {
+            NumberVertices = numberVertices;
+            LengthSide = lengthSide;
+            Apofema = apofema;
+            CorX2 = corX2;
+            CorY2 = corY2;
+        }
+
+        public int numberVerticles
+        {
+            get { return NumberVertices; }
+            set { NumberVertices = value; }
+        }
+
+        public double lengthSide
+        {
+            get { return LengthSide; }
+            set { LengthSide = value; }
+        }
+
+        public double apofema
+        {
+            get { return Apofema; }
+            set { Apofema = value; }
+        }
+
+        public double corX2
+        {
+            get { return CorX2; }
+            set { CorX2 = value; }
+        }
+
+        public double corY2
+        {
+            get { return CorY2; }
+            set { CorY2 = value; }
+        }
+
+        public void Display()
+        {
+            Console.WriteLine("Кількість вершин = " + numberVerticles);
+            Console.WriteLine("Довжина сторони = " + lengthSide);
+
+        }
+
+        public async void SumCorners()
+        {
+            int corners = (numberVerticles - 2) * 180;
+            Console.WriteLine("Cума кутів = " + corners);
+
+            string path = "polygon.txt";
+            using (StreamWriter writer = new StreamWriter(path, true))
+            {
+                await writer.WriteLineAsync("Cума кутів: " + corners);
+
+
+            }
+
+        }
+
+        public async void Area()
+        {
+            lengthSide = Math.Sqrt((corX2 - corX) * (corX2 - corX) + (corY2 - corY) * (corY2 - corY)); ;
+            double perimetr = (numberVerticles * lengthSide)/2;
+            double areaPol = perimetr * apofema;
+
+            Console.WriteLine("S многокутника = " + areaPol);
+
+            string path = "polygon.txt";
+            using (StreamWriter writer = new StreamWriter(path, true))
+            {
+                await writer.WriteLineAsync("Площа: " + areaPol);
+
+
+            }
+        }
+    }
+
+    
+}
+
+//Circle.cs
+
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace OOP_Lab_4
+{
+    class Circle : GeometricFigure
+    {
+        private double CentreX;
+        private double CentreY;
+        private double CentreRadius;
+        private double CorX2;
+        private double CorY2;
+
+
+        public Circle(string name, string type, double corX, double corY, double centreX, double centreY, double centreRadius,double corX2,double corY2) : base(name, type, corX, corY)
+        {
+            CentreRadius = centreRadius;
+            CentreX = centreX;
+            CentreY = centreY;
+            CorX2 = corX2;
+            CorY2 = corY2;
+        }
+        public double corX2
+        {
+            get { return CorX2; }
+            set { CorX2 = value; }
+        }
+
+        public double corY2
+        {
+            get { return CorY2; }
+            set { CorY2 = value; }
+        }
+
+        public double centreRadius
+        {
+            get { return CentreRadius; }
+            set { CentreRadius = value; }
+        }
+        public double centreX
+        {
+            get { return CentreX; }
+            set { CentreX = value; }
+        }
+
+        public double centreY 
+        {
+            get { return CentreY; }
+            set { CentreY = value; }
+        }
+
+       
+        public void Display()
+        {
+            Console.WriteLine("Координата cередини кола Х = "+centreX);
+            Console.WriteLine("Координата середини кола Y = " + centreY);
+            Console.WriteLine("Радіус = " + centreRadius);
+        }
+
+        public async void Radius()
+        {
+            string path = "circle.txt";
+            centreRadius = Math.Sqrt((corX2 - corX) * (corX2 - corX) + (corY2 - corY) * (corY2 - corY));
+            centreX = (corX + corX2 )/ 2;
+            centreY = (corY + corY2) / 2;
+
+            using (StreamWriter writer = new StreamWriter(path, true))
+            {
+                await writer.WriteLineAsync("Радіус: " + centreRadius);
+                await writer.WriteLineAsync("X centre: " + centreX);
+                await writer.WriteLineAsync("Y centre: " + centreY);
+
+            }
+
+        }
+        public async void Area()
+        {
+            double area = centreRadius * centreRadius * Math.PI;
+            Console.WriteLine("Площа = " + area);
+
+            string path = "circle.txt";
+            using (StreamWriter writer = new StreamWriter(path, true))
+            {
+                await writer.WriteLineAsync("Площа: " + area);
+                
+
+            }
+        }
+
+        public async void RadiusTriangle()
+        {
+            Console.WriteLine("Введіть значення сторон трикутника");
+            Console.Write("1 cторона:");
+            double length1=double.Parse(Console.ReadLine());
+            Console.WriteLine();
+            Console.Write("2 cторона:");
+            double length2 = double.Parse(Console.ReadLine());
+            Console.WriteLine();
+            Console.Write("3 cторона:");
+            double length3 = double.Parse(Console.ReadLine());
+            Console.WriteLine();
+            double halfP;
+            halfP = (length1 + length2 + length3) / 2;
+            double areaTriangle=Math.Sqrt(halfP*(halfP-length1)*(halfP - length2)*(halfP - length3));
+            double inRadius = areaTriangle / halfP;
+            double outRadius = (length1 * length2 * length3) / (4 * areaTriangle);
+
+            Console.WriteLine("R = "+outRadius);
+            Console.WriteLine("r = " + inRadius);
+
+
+            string path = "circle.txt";
+            using (StreamWriter writer = new StreamWriter(path, true))
+            {
+                await writer.WriteLineAsync("R: " + outRadius);
+                await writer.WriteLineAsync("r: " + inRadius);
+
+            }
+        }
+
+        public async void RadiusSquare()
+        {
+            Console.Write("Cторона квадрата:");
+            double a = double.Parse(Console.ReadLine());
+            Console.WriteLine();
+            double inRadius = a / 2;
+            double outRadius = a / Math.Sqrt(2);
+
+            Console.WriteLine("R = " + outRadius);
+            Console.WriteLine("r = " + inRadius);
+
+            string path = "circle.txt";
+            using (StreamWriter writer = new StreamWriter(path, true))
+            {
+                await writer.WriteLineAsync("R: " + outRadius);
+                await writer.WriteLineAsync("r: " + inRadius);
+
+            }
+        }
+
+        public async void RadiusRectangle()
+        {
+            Console.Write("Cторона 1:");
+            double a = double.Parse(Console.ReadLine());
+            Console.WriteLine();
+
+            Console.Write("Cторона 2:");
+            double b = double.Parse(Console.ReadLine());
+            Console.WriteLine();
+
+            if (a <= b)
+            {
+                Console.WriteLine("Спробуйте ще раз!:");
+                return;
+            }
+
+            double outRadius = (Math.Sqrt(a * a - b * b)) / 2;
+
+            Console.WriteLine("R = " + outRadius);
+
+            string path = "circle.txt";
+            using (StreamWriter writer = new StreamWriter(path, true))
+            {
+                await writer.WriteLineAsync("R: " + outRadius);
+
+            }
+        }
+    }
+
+   
+
+}
+
+//Triangle.cs
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Xml.Linq;
+
+namespace OOP_Lab_4
+{
+    class Triangle:GeometricFigure
+    {
+        
+        private double CorX2;
+        private double CorY2;
+        private double CorX3;
+        private double CorY3;
+        private double Area1;
+
+        public Triangle(string name, string type, double corX, double corY, double corX2, double corX3, double corY2, double corY3,double area1) : base(name, type, corX, corY)
+        {
+            
+            CorX2 = corX2;
+            CorY2 = corY2;
+            CorX3 = corX3;
+            CorY3 = corY3;
+            Area1 = area1;
+        }
+
+
+        public double corX2
+        {
+            get { return CorX2; }
+            set { CorX2 = value; }
+        }
+
+        public double corY2
+        {
+            get { return CorY2; }
+            set { CorY2 = value; }
+        }
+
+        public double corX3
+        {
+            get { return CorX3; }
+            set { CorX3 = value; }
+        }
+
+        public double corY3
+        {
+            get { return CorY3; }
+            set { CorY3 = value; }
+        }
+
+        public double area1
+        {
+            get { return Area1; }
+            set { Area1 = value; }
+        }
+
+        public new void Display()
+        {
+            GeometricFigure figure = new GeometricFigure(name, type, corX, corY);
+            figure.Display();
+            Console.WriteLine("Координата Х2 = " + corX2);
+            Console.WriteLine("Координата Y2 = " + corY2);
+            Console.WriteLine("Координата Х3 = " + corX3);
+            Console.WriteLine("Координата Y3 = " + corY3);
+        }
+
+        public async void SumCorners()
+        {
+            int corners = (3 - 2) * 180;
+            Console.WriteLine("Cума кутів = " + corners);
+
+            string path = "triangle.txt";
+            using (StreamWriter writer = new StreamWriter(path, true))
+            {
+                await writer.WriteLineAsync("Cума кутів: " + corners);
+
+
+            }
+        }
+        public async void Area()
+        {
+            double length1 = Math.Sqrt((corX2 - corX) * (corX2 - corX) + (corY2 - corY) * (corY2 - corY));
+            double length2 = Math.Sqrt((corX3 - corX2) * (corX3 - corX2) + (corY3 - corY2) * (corY3 - corY2));
+            double length3 = Math.Sqrt((corX - corX3) * (corX - corX3) + (corY - corY3) * (corY - corY3));
+
+            double halfP = (length1 + length2 + length3) / 2;
+            Area1 = Math.Sqrt(halfP * (halfP - length1) * (halfP - length2) * (halfP - length3));
+
+            Console.WriteLine("S трикутника = "+Area1);
+
+            string path = "triangle.txt";
+            using (StreamWriter writer = new StreamWriter(path, true))
+            {
+                await writer.WriteLineAsync("Площа: " + Area1);
+
+
+            }
+        }
+    }
+
+   
+    
+}
+
+//OOP_Lab4_vers2
+//GeometricFigure.cs
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace OOP_Lab4_vers2
+{
+    internal class GeometricFigure:Interface1
+    {
+        private string Name;
+        private string Type;
+        private double CorX;
+        private double CorY;
+
+        public GeometricFigure(string name, string type, double corX, double corY)
+        {
+            Name = name;
+            Type = type;
+            CorX = corX;
+            CorY = corY;
+        }
+
+        public string name
+        {
+            get { return Name; }
+            set { Name = value; }
+        }
+
+        public string type
+        {
+            get { return Type; }
+            set { Type = value; }
+        }
+        public double corX
+        {
+            get { return CorX; }
+            set { CorX = value; }
+        }
+        public double corY
+        {
+            get { return CorY; }
+            set { CorY = value; }
+        }
+
+        public int AreaG { get; internal set; }
+
+        public void Display()
+        {
+            Console.WriteLine("Назва фігури = " + name);
+            Console.WriteLine("Координата Х = " + corX);
+            Console.WriteLine("Координата Y = " + corY);
+        }
+        public void Area()
+        {
+            throw new NotImplementedException();
+        }
+        public void RadiusRectangle()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RadiusSquare()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RadiusTriangle()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SumCorners()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Radius()
+        {
+            throw new NotImplementedException();
+        }
+    }
+}
+
+//Polygon.cs
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace OOP_Lab_4
+{
+    class Polygon:GeometricFigure
+    {
+        private int NumberVertices;
+        private double LengthSide;
+        private double Apofema;
+        private double CorX2;
+        private double CorY2;
+
+        public Polygon(string name, string type, double corX, double corY,int numberVertices, double lengthSide, double apofema, double corX2, double corY2) : base(name, type, corX, corY)
+        {
+            NumberVertices = numberVertices;
+            LengthSide = lengthSide;
+            Apofema = apofema;
+            CorX2 = corX2;
+            CorY2 = corY2;
+        }
+
+        public int numberVerticles
+        {
+            get { return NumberVertices; }
+            set { NumberVertices = value; }
+        }
+
+        public double lengthSide
+        {
+            get { return LengthSide; }
+            set { LengthSide = value; }
+        }
+
+        public double apofema
+        {
+            get { return Apofema; }
+            set { Apofema = value; }
+        }
+
+        public double corX2
+        {
+            get { return CorX2; }
+            set { CorX2 = value; }
+        }
+
+        public double corY2
+        {
+            get { return CorY2; }
+            set { CorY2 = value; }
+        }
+
+        public void Display()
+        {
+            Console.WriteLine("Кількість вершин = " + numberVerticles);
+            Console.WriteLine("Довжина сторони = " + lengthSide);
+
+        }
+
+        public async void SumCorners()
+        {
+            int corners = (numberVerticles - 2) * 180;
+            Console.WriteLine("Cума кутів = " + corners);
+
+            string path = "polygon.txt";
+            using (StreamWriter writer = new StreamWriter(path, true))
+            {
+                await writer.WriteLineAsync("Cума кутів: " + corners);
+
+
+            }
+
+        }
+
+        public async void Area()
+        {
+            lengthSide = Math.Sqrt((corX2 - corX) * (corX2 - corX) + (corY2 - corY) * (corY2 - corY)); ;
+            double perimetr = (numberVerticles * lengthSide)/2;
+            double areaPol = perimetr * apofema;
+
+            Console.WriteLine("S многокутника = " + areaPol);
+
+            string path = "polygon.txt";
+            using (StreamWriter writer = new StreamWriter(path, true))
+            {
+                await writer.WriteLineAsync("Площа: " + areaPol);
+
+
+            }
+        }
+    }
+
+    
+}
+
+//Triangle.cs
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Xml.Linq;
+
+namespace OOP_Lab4_vers2
+{
+    class Triangle:GeometricFigure,Interface1
+    {
+        private double CorX2;
+        private double CorY2;
+        private double CorX3;
+        private double CorY3;
+        private double Area1;
+
+        public Triangle(string name, string type, double corX, double corY, double corX2, double corX3, double corY2, double corY3, double area1) : base(name, type, corX, corY)
+        {
+
+            CorX2 = corX2;
+            CorY2 = corY2;
+            CorX3 = corX3;
+            CorY3 = corY3;
+            Area1 = area1;
+        }
+
+
+        public double corX2
+        {
+            get { return CorX2; }
+            set { CorX2 = value; }
+        }
+
+        public double corY2
+        {
+            get { return CorY2; }
+            set { CorY2 = value; }
+        }
+
+        public double corX3
+        {
+            get { return CorX3; }
+            set { CorX3 = value; }
+        }
+
+        public double corY3
+        {
+            get { return CorY3; }
+            set { CorY3 = value; }
+        }
+
+        public double area1
+        {
+            get { return Area1; }
+            set { Area1 = value; }
+        }
+
+        public new void Display()
+        {
+            GeometricFigure figure = new GeometricFigure(name, type, corX, corY);
+            figure.Display();
+            Console.WriteLine("Координата Х2 = " + corX2);
+            Console.WriteLine("Координата Y2 = " + corY2);
+            Console.WriteLine("Координата Х3 = " + corX3);
+            Console.WriteLine("Координата Y3 = " + corY3);
+        }
+
+        public async void SumCorners()
+        {
+            int corners = (3 - 2) * 180;
+            Console.WriteLine("Cума кутів = " + corners);
+
+            string path = "triangle.txt";
+            using (StreamWriter writer = new StreamWriter(path, true))
+            {
+                await writer.WriteLineAsync("Cума кутів: " + corners);
+
+
+            }
+        }
+        public async void Area()
+        {
+            double length1 = Math.Sqrt((corX2 - corX) * (corX2 - corX) + (corY2 - corY) * (corY2 - corY));
+            double length2 = Math.Sqrt((corX3 - corX2) * (corX3 - corX2) + (corY3 - corY2) * (corY3 - corY2));
+            double length3 = Math.Sqrt((corX - corX3) * (corX - corX3) + (corY - corY3) * (corY - corY3));
+
+            double halfP = (length1 + length2 + length3) / 2;
+            Area1 = Math.Sqrt(halfP * (halfP - length1) * (halfP - length2) * (halfP - length3));
+
+            Console.WriteLine("S трикутника = " + Area1);
+
+            string path = "triangle.txt";
+            using (StreamWriter writer = new StreamWriter(path, true))
+            {
+                await writer.WriteLineAsync("Площа: " + Area1);
+
+
+            }
+        }
+
+
+    }
+}
+
+//Circle.cs
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace OOP_Lab4_vers2
+{
+    class Circle : GeometricFigure, Interface1
+    {
+        private double CentreX;
+        private double CentreY;
+        private double CentreRadius;
+        private double CorX2;
+        private double CorY2;
+
+
+        public Circle(string name, string type, double corX, double corY, double centreX, double centreY, double centreRadius, double corX2, double corY2) : base(name, type, corX, corY)
+        {
+            CentreRadius = centreRadius;
+            CentreX = centreX;
+            CentreY = centreY;
+            CorX2 = corX2;
+            CorY2 = corY2;
+        }
+        public double corX2
+        {
+            get { return CorX2; }
+            set { CorX2 = value; }
+        }
+
+        public double corY2
+        {
+            get { return CorY2; }
+            set { CorY2 = value; }
+        }
+
+        public double centreRadius
+        {
+            get { return CentreRadius; }
+            set { CentreRadius = value; }
+        }
+        public double centreX
+        {
+            get { return CentreX; }
+            set { CentreX = value; }
+        }
+
+        public double centreY
+        {
+            get { return CentreY; }
+            set { CentreY = value; }
+        }
+
+        public void Display()
+        {
+            Console.WriteLine("Координата cередини кола Х = " + centreX);
+            Console.WriteLine("Координата середини кола Y = " + centreY);
+            Console.WriteLine("Радіус = " + centreRadius);
+        }
+
+        public async void Radius()
+        {
+            string path = "circle.txt";
+            centreRadius = Math.Sqrt((corX2 - corX) * (corX2 - corX) + (corY2 - corY) * (corY2 - corY));
+            centreX = (corX + corX2) / 2;
+            centreY = (corY + corY2) / 2;
+
+            using (StreamWriter writer = new StreamWriter(path, true))
+            {
+                await writer.WriteLineAsync("Радіус: " + centreRadius);
+                await writer.WriteLineAsync("X centre: " + centreX);
+                await writer.WriteLineAsync("Y centre: " + centreY);
+
+            }
+
+        }
+        public async void Area()
+        {
+            double area = centreRadius * centreRadius * Math.PI;
+            Console.WriteLine("Площа = " + area);
+
+            string path = "circle.txt";
+            using (StreamWriter writer = new StreamWriter(path, true))
+            {
+                await writer.WriteLineAsync("Площа: " + area);
+
+
+            }
+        }
+
+        public async void RadiusTriangle()
+        {
+            Console.WriteLine("Введіть значення сторон трикутника");
+            Console.Write("1 cторона:");
+            double length1 = double.Parse(Console.ReadLine());
+            Console.WriteLine();
+            Console.Write("2 cторона:");
+            double length2 = double.Parse(Console.ReadLine());
+            Console.WriteLine();
+            Console.Write("3 cторона:");
+            double length3 = double.Parse(Console.ReadLine());
+            Console.WriteLine();
+            double halfP;
+            halfP = (length1 + length2 + length3) / 2;
+            double areaTriangle = Math.Sqrt(halfP * (halfP - length1) * (halfP - length2) * (halfP - length3));
+            double inRadius = areaTriangle / halfP;
+            double outRadius = (length1 * length2 * length3) / (4 * areaTriangle);
+
+            Console.WriteLine("R = " + outRadius);
+            Console.WriteLine("r = " + inRadius);
+
+
+            string path = "circle.txt";
+            using (StreamWriter writer = new StreamWriter(path, true))
+            {
+                await writer.WriteLineAsync("R: " + outRadius);
+                await writer.WriteLineAsync("r: " + inRadius);
+
+            }
+        }
+
+        public async void RadiusSquare()
+        {
+            Console.Write("Cторона квадрата:");
+            double a = double.Parse(Console.ReadLine());
+            Console.WriteLine();
+            double inRadius = a / 2;
+            double outRadius = a / Math.Sqrt(2);
+
+            Console.WriteLine("R = " + outRadius);
+            Console.WriteLine("r = " + inRadius);
+
+            string path = "circle.txt";
+            using (StreamWriter writer = new StreamWriter(path, true))
+            {
+                await writer.WriteLineAsync("R: " + outRadius);
+                await writer.WriteLineAsync("r: " + inRadius);
+
+            }
+        }
+
+        public async void RadiusRectangle()
+        {
+            Console.Write("Cторона 1:");
+            double a = double.Parse(Console.ReadLine());
+            Console.WriteLine();
+
+            Console.Write("Cторона 2:");
+            double b = double.Parse(Console.ReadLine());
+            Console.WriteLine();
+
+            if (a <= b)
+            {
+                Console.WriteLine("Спробуйте ще раз!:");
+                return;
+            }
+
+            double outRadius = (Math.Sqrt(a * a - b * b)) / 2;
+
+            Console.WriteLine("R = " + outRadius);
+
+            string path = "circle.txt";
+            using (StreamWriter writer = new StreamWriter(path, true))
+            {
+                await writer.WriteLineAsync("R: " + outRadius);
+
+            }
+        }
+    }
+}
+
+//Interface1.cs
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace OOP_Lab4_vers2
+{
+    internal interface Interface1
+    {
+        void Display();
+        void Area();
+
+        void RadiusTriangle();
+
+        void RadiusSquare();
+
+        void RadiusRectangle();
+
+        void Radius();
+
+        void SumCorners();
+    }
+}
+
+//OOP_Lab4_vers3
+//AbstrGeometricFigure.cs
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Xml.Linq;
+
+namespace OOP_Lab4_vers3
+{
+    abstract class AbstrGeometricFigure
+    {
+        private string Name;
+        private string Type;
+        public AbstrGeometricFigure(string name, string type)
+        {
+            Name = name;
+            Type = type;
+            
+        }
+        public void Display()
+        {
+            Console.WriteLine("Назва фігури = " + Name);
+            Console.WriteLine("Тип фігури = " + Type);
+           
+        }
+    }
+}
+
+//Polygon.cs
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace OOP_Lab4_vers3
+{
+    
+    class Polygon : AbstrGeometricFigure
+    {
+        private int NumberVertices;
+        private double LengthSide;
+        private double Apofema;
+        private double CorX;
+        private double CorY;
+        private double CorX2;
+        private double CorY2;
+
+        public Polygon(string name, string type, int numberVertices, double lengthSide, double apofema, double corX, double corY, double corX2, double corY2) : base(name, type)
+        {
+            NumberVertices = numberVertices;
+            LengthSide = lengthSide;
+            Apofema = apofema;
+            CorX = corX;
+            CorY = corY;
+            CorX2 = corX2;
+            CorY2 = corY2;
+        }
+
+        public int numberVerticles
+        {
+            get { return NumberVertices; }
+            set { NumberVertices = value; }
+        }
+
+        public double lengthSide
+        {
+            get { return LengthSide; }
+            set { LengthSide = value; }
+        }
+
+        public double apofema
+        {
+            get { return Apofema; }
+            set { Apofema = value; }
+        }
+
+        public double corX
+        {
+            get { return CorX; }
+            set { CorX = value; }
+        }
+
+        public double corY
+        {
+            get { return CorY; }
+            set { CorY = value; }
+        }
+        public double corX2
+        {
+            get { return CorX2; }
+            set { CorX2 = value; }
+        }
+
+        public double corY2
+        {
+            get { return CorY2; }
+            set { CorY2 = value; }
+        }
+
+        public void Display()
+        {
+            base.Display();
+            Console.WriteLine("Кількість вершин = " + numberVerticles);
+            Console.WriteLine("Довжина сторони = " + lengthSide);
+        }
+
+        public async void SumCorners()
+        {
+            int corners = (numberVerticles - 2) * 180;
+            Console.WriteLine("Cума кутів = " + corners);
+            string path = "polygon.txt";
+            using (StreamWriter writer = new StreamWriter(path, true))
+            {
+                await writer.WriteLineAsync("Cума кутів: " + corners);
+
+
+            }
+        }
+
+        public async void Area()
+        {
+            lengthSide = Math.Sqrt((corX2 - corX) * (corX2 - corX) + (corY2 - corY) * (corY2 - corY)); ;
+            double perimetr = (numberVerticles * lengthSide) / 2;
+            double areaPol = perimetr * apofema;
+
+            Console.WriteLine("S многокутника = " + areaPol);
+
+
+            string path = "polygon.txt";
+            using (StreamWriter writer = new StreamWriter(path, true))
+            {
+                await writer.WriteLineAsync("Площа: " + areaPol);
+
+
+            }
+
+        }
+
+    }
+}
+
+//Circle.cs
+
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace OOP_Lab4_vers3
+{
+   
+
+    class Circle:AbstrGeometricFigure
+    {
+        private double CentreX;
+        private double CentreY;
+        private double CentreRadius;
+        private double CorX;
+        private double CorY;
+        private double CorX2;
+        private double CorY2;
+
+
+        public Circle(string name, string type, double corX, double corY, double centreX, double centreY, double centreRadius, double corX2, double corY2) : base(name, type)
+        {
+            CentreRadius = centreRadius;
+            CentreX = centreX;
+            CentreY = centreY;
+            CorX = corX;
+            CorY = corY;
+            CorX2 = corX2;
+            CorY2 = corY2;
+        }
+
+        public double corX
+        {
+            get { return CorX; }
+            set { CorX = value; }
+        }
+        public double corY
+        {
+            get { return CorY; }
+            set { CorY = value; }
+        }
+        public double corX2
+        {
+            get { return CorX2; }
+            set { CorX2 = value; }
+        }
+
+        public double corY2
+        {
+            get { return CorY2; }
+            set { CorY2 = value; }
+        }
+
+        public double centreRadius
+        {
+            get { return CentreRadius; }
+            set { CentreRadius = value; }
+        }
+        public double centreX
+        {
+            get { return CentreX; }
+            set { CentreX = value; }
+        }
+
+        public double centreY
+        {
+            get { return CentreY; }
+            set { CentreY = value; }
+        }
+
+        //public double halfP
+        //{
+        //    get { return halfP; }
+        //    set { halfP = value; }
+        //}
+        public void Display()
+        {
+            Console.WriteLine("Координата cередини кола Х = " + centreX);
+            Console.WriteLine("Координата середини кола Y = " + centreY);
+            Console.WriteLine("Радіус = " + centreRadius);
+        }
+
+        public async void Radius()
+        {
+            string path = "circle.txt";
+            centreRadius = Math.Sqrt((corX2 - corX) * (corX2 - corX) + (corY2 - corY) * (corY2 - corY));
+            centreX = (corX + corX2) / 2;
+            centreY = (corY + corY2) / 2;
+            using (StreamWriter writer = new StreamWriter(path, true))
+            {
+                await writer.WriteLineAsync("Радіус: " + centreRadius);
+                await writer.WriteLineAsync("X centre: " + centreX);
+                await writer.WriteLineAsync("Y centre: " + centreY);
+
+            }
+        }
+        public async void Area()
+        {
+            double area = centreRadius * centreRadius * Math.PI;
+            Console.WriteLine("Площа = " + area);
+            string path = "circle.txt";
+            using (StreamWriter writer = new StreamWriter(path, true))
+            {
+                await writer.WriteLineAsync("Площа: " + area);
+
+
+            }
+
+        }
+
+        public async void RadiusTriangle()
+        {
+            Console.WriteLine("Введіть значення сторон трикутника");
+            Console.Write("1 cторона:");
+            double length1 = double.Parse(Console.ReadLine());
+            Console.WriteLine();
+            Console.Write("2 cторона:");
+            double length2 = double.Parse(Console.ReadLine());
+            Console.WriteLine();
+            Console.Write("3 cторона:");
+            double length3 = double.Parse(Console.ReadLine());
+            if (length3 > length1 + length2)
+            {
+                Console.WriteLine("Невірно! Cпробуйте ще раз");
+                Process.GetCurrentProcess().Kill();
+            }
+            Console.WriteLine();
+            double halfP;
+            halfP = (length1 + length2 + length3) / 2;
+            double areaTriangle = Math.Sqrt(halfP * (halfP - length1) * (halfP - length2) * (halfP - length3));
+            double inRadius = areaTriangle / halfP;
+            double outRadius = (length1 * length2 * length3) /( 4 * areaTriangle);
+
+            Console.WriteLine("R = " + outRadius);
+            Console.WriteLine("r = " + inRadius);
+
+            string path = "circle.txt";
+            using (StreamWriter writer = new StreamWriter(path, true))
+            {
+                await writer.WriteLineAsync("R: " + outRadius);
+                await writer.WriteLineAsync("r: " + inRadius);
+
+            }
+        }
+
+        public async void RadiusSquare()
+        {
+            Console.Write("Cторона квадрата:");
+            double a = double.Parse(Console.ReadLine());
+            Console.WriteLine();
+            double inRadius = a / 2;
+            double outRadius = a / Math.Sqrt(2);
+
+            Console.WriteLine("R = " + outRadius);
+            Console.WriteLine("r = " + inRadius);
+
+            string path = "circle.txt";
+            using (StreamWriter writer = new StreamWriter(path, true))
+            {
+                await writer.WriteLineAsync("R: " + outRadius);
+                await writer.WriteLineAsync("r: " + inRadius);
+
+            }
+        }
+
+        public async void RadiusRectangle()
+        {
+            Console.Write("Більша сторона:");
+            double a = double.Parse(Console.ReadLine());
+            Console.WriteLine();
+
+            Console.Write("Менша сторона:");
+            double b = double.Parse(Console.ReadLine());
+            Console.WriteLine();
+
+            if(a <= b)
+            {
+                Console.WriteLine("Спробуйте ще раз!:");
+                return;
+            }
+
+            double outRadius = Math.Sqrt(a * a - b * b)/2;
+
+            Console.WriteLine("R = " + outRadius);
+
+            string path = "circle.txt";
+            using (StreamWriter writer = new StreamWriter(path, true))
+            {
+                await writer.WriteLineAsync("R: " + outRadius);
+
+            }
+        }
+    }
+
+}
+
+//Triangle.cs
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Xml.Linq;
+
+namespace OOP_Lab4_vers3
+{
+    
+   class Triangle:AbstrGeometricFigure
+    {
+        private double CorX;
+        private double CorY;
+        private double CorX2;
+        private double CorY2;
+        private double CorX3;
+        private double CorY3;
+        private double Area1;
+
+        public Triangle(string name, string type, double corX, double corY, double corX2, double corX3, double corY2, double corY3, double area1) : base(name, type)
+        {
+            CorX = corX;
+            CorY = corY;
+            CorX2 = corX2;
+            CorY2 = corY2;
+            CorX3 = corX3;
+            CorY3 = corY3;
+            Area1 = area1;
+        }
+
+        public double corX
+        {
+            get { return CorX; }
+            set { CorX = value; }
+        }
+
+        public double corY
+        {
+            get { return CorY; }
+            set { CorY = value; }
+        }
+        public double corX2
+        {
+            get { return CorX2; }
+            set { CorX2 = value; }
+        }
+
+        public double corY2
+        {
+            get { return CorY2; }
+            set { CorY2 = value; }
+        }
+
+        public double corX3
+        {
+            get { return CorX3; }
+            set { CorX3 = value; }
+        }
+
+        public double corY3
+        {
+            get { return CorY3; }
+            set { CorY3 = value; }
+        }
+
+        public new void Display()
+        {
+            base.Display();
+            //Console.WriteLine("Координата Х1 = " + corX);
+            //Console.WriteLine("Координата Y1 = " + corY);
+            Console.WriteLine("Координата Х2 = " + corX2);
+            Console.WriteLine("Координата Y2 = " + corY2);
+            Console.WriteLine("Координата Х3 = " + corX3);
+            Console.WriteLine("Координата Y3 = " + corY3);
+        }
+
+        public async void SumCorners()
+        {
+            int corners = (3 - 2) * 180;
+            Console.WriteLine("Cума кутів = " + corners);
+
+            string path = "triangle.txt";
+            using (StreamWriter writer = new StreamWriter(path, true))
+            {
+                await writer.WriteLineAsync("Cума кутів: " + corners);
+
+
+            }
+
+        }
+        public async void Area()
+        {
+            double length1 = Math.Sqrt((corX2 - corX) * (corX2 - corX) + (corY2 - corY) * (corY2 - corY));
+            double length2 = Math.Sqrt((corX3 - corX2) * (corX3 - corX2) + (corY3 - corY2) * (corY3 - corY2));
+            double length3 = Math.Sqrt((corX - corX3) * (corX - corX3) + (corY - corY3) * (corY - corY3));
+
+            double halfP = (length1 + length2 + length3) / 2;
+            Area1 = Math.Sqrt(halfP * (halfP - length1) * (halfP - length2) * (halfP - length3));
+
+            Console.WriteLine("S трикутника = " + Area1);
+
+            string path = "triangle.txt";
+            using (StreamWriter writer = new StreamWriter(path, true))
+            {
+                await writer.WriteLineAsync("Площа: " + Area1);
+
+
+            }
+        }
+    } 
+}
+
+//OOP_Lab4_vers4
+//Program.cs
+
+using System;
+using System.Collections;
+using System.Drawing;
+using System.Runtime.CompilerServices;
+
+namespace OOPP_Lab4_vers4
+{
+    class Program
+    {
+       
+        static void Main(string[] args)
+        {
+            Console.OutputEncoding = System.Text.Encoding.Unicode;
+
+            GeometricFigure[] figures = new GeometricFigure[3];
+            GeometricFigure[] figures2 = new GeometricFigure[3];
+            GeometricFigure[] figures3 = new GeometricFigure[3];
+
+            Console.WriteLine("Введіть координати");
+            Console.Write("1 сторона: ");
+            double aX = double.Parse(Console.ReadLine());
+            double aY = double.Parse(Console.ReadLine());
+            Console.WriteLine();
+            Console.Write("2 сторона: ");
+            double bX = double.Parse(Console.ReadLine());
+            double bY = double.Parse(Console.ReadLine());
+            Console.WriteLine();
+            Console.Write("3 сторона: ");
+            double cX = double.Parse(Console.ReadLine());
+            double cY = double.Parse(Console.ReadLine());
+            Console.WriteLine();
+
+            Triangle triangle = new Triangle(aX,aY,bX,bY,cX,cY);
+            triangle.CalculateArea();
+            triangle.NumberOfSides();
+            figures[0] = triangle;
+            figures2[0] = triangle;
+            figures3[0] = triangle;
+
+
+            Console.WriteLine("Введіть координати");
+            Console.Write("Cторона многокутника: ");
+            double mnogX = double.Parse(Console.ReadLine());
+            double mnogY = double.Parse(Console.ReadLine());
+            double mnogX2 = double.Parse(Console.ReadLine());
+            double mnogY2 = double.Parse(Console.ReadLine());
+            Console.WriteLine();
+
+            Console.Write("Кількість вершин: ");
+            int numberV = int.Parse(Console.ReadLine());
+            Console.WriteLine();
+
+            Console.Write("Апофема: ");
+            int apof = int.Parse(Console.ReadLine());
+            Console.WriteLine();
+
+            Polygon polygon = new Polygon(mnogX, mnogX2, mnogY, mnogY2, numberV, apof);
+            polygon.CalculateArea();
+            polygon.NumberOfSides();
+            figures[1]=polygon;
+            figures2[1]=polygon;
+            figures3[1] = polygon;
+
+
+            Console.Write("Введіть радіус кола: ");
+            double centrR = double.Parse(Console.ReadLine());
+            Console.WriteLine();
+
+            Circle circle = new Circle(centrR);
+            circle.CalculateArea();
+            circle.NumberOfSides();
+            figures[2] = circle;
+            figures2[2] = circle;
+            figures3[2] = circle;
+
+
+
+            Array.Sort(figures);
+
+            Console.WriteLine("==IComparable================================");
+            foreach (GeometricFigure figure in figures)
+            {
+                Console.WriteLine($"Площа фігури {figure.Name}: {figure.Area}");
+            }
+            Console.WriteLine("===========================================");
+
+            Array.Sort(figures2, new GeometricFigure());
+
+            Console.WriteLine("==IComparer================================");
+            foreach (GeometricFigure figure in figures2)
+            {
+                Console.WriteLine($"Площа фігури {figure.Name} : " + figure.Area + " Кількість кутів: " + figure.NumberSides);
+            }
+            Console.WriteLine("===========================================");
+
+            GeometricFigureCollection collection = new GeometricFigureCollection(figures3);
+
+            Console.WriteLine("==IEnumerable================================");
+            foreach (GeometricFigure figure in collection)
+            {
+                Console.WriteLine($"Площа фігури {figure.Name}: {figure.Area}");
+            }
+            Console.WriteLine("===========================================");
+
+        }
+    }
+
+    class GeometricFigure : IComparable<GeometricFigure>,IComparer<GeometricFigure>
+    {
+        public double Area { get; set; }
+        public int NumberSides { get; set; }
+        public string Name { get; set; }
+        public void CalculateArea()
+        {
+
+        }
+
+        public int Compare(GeometricFigure x, GeometricFigure y)
+        {
+            if (x.NumberSides > y.NumberSides)
+            {
+                return 1;
+            }
+            else if (x.NumberSides < y.NumberSides)
+            {
+                return -1;
+            }
+            else
+            {
+                if (x.Area > y.Area)
+                {
+                    return 1;
+                }
+                else if (x.Area < y.Area)
+                {
+                    return -1;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+
+
+        }
+        public int CompareTo(GeometricFigure other)
+        {
+            if (Area > other.Area)
+                return 1;
+
+            else if (Area < other.Area)
+                return -1;
+
+            else
+                return 0;
+        }
+
+        
+
+
+    }
+
+    class GeometricFigureCollection:IEnumerable<GeometricFigure>
+    {
+        private GeometricFigure[] figures;
+
+        public GeometricFigureCollection(GeometricFigure[] figures)
+        {
+            this.figures = figures;
+        }
+
+        public IEnumerator<GeometricFigure> GetEnumerator()
+        {
+            Array.Sort(figures);
+            foreach(GeometricFigure fig in figures)
+            {
+                yield return fig;
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+    }
+    
+
+    class Triangle : GeometricFigure
+    {
+        
+        private double CorX;
+        private double CorY;
+        private double CorX2;
+        private double CorY2;
+        private double CorX3;
+        private double CorY3;
+        
+
+        public Triangle( double corX, double corX2, double corX3, double corY, double corY2, double corY3)
+        {
+            CorX = corX;
+            CorY = corY;
+            CorX2 = corX2;
+            CorY2 = corY2;
+            CorX3 = corX3;
+            CorY3 = corY3;
+            
+        }
+
+
+        public async void CalculateArea()
+        {
+
+            double length1 = Math.Sqrt((CorX2 - CorX) * (CorX2 - CorX) + (CorY2 - CorY) * (CorY2 - CorY));
+            double length2 = Math.Sqrt((CorX3 - CorX2) * (CorX3 - CorX2) + (CorY3 - CorY2) * (CorY3 - CorY2));
+            double length3 = Math.Sqrt((CorX - CorX3) * (CorX - CorX3) + (CorY - CorY3) * (CorY - CorY3));
+
+            double halfP = (length1 + length2 + length3) / 2;
+            Area = Math.Sqrt(halfP* (halfP - length1) * (halfP - length2) * (halfP - length3));
+            Name = "трикутника";
+
+
+            string path = "triangle.txt";
+            using (StreamWriter writer = new StreamWriter(path, true))
+            {
+                await writer.WriteLineAsync("Площа: " + Area);
+
+
+            }
+        }
+
+        public void NumberOfSides()
+        {
+            NumberSides = 3;
+        }
+    }
+
+    class Circle : GeometricFigure
+    {
+        private double CentreRadius;
+        
+        public Circle(double centreRadius)
+        {
+            CentreRadius = centreRadius;
+        }
+
+        public async void CalculateArea()
+        {
+            Area = CentreRadius * CentreRadius * Math.PI;
+            Name = "кола";
+
+            string path = "circle.txt";
+            using (StreamWriter writer = new StreamWriter(path, true))
+            {
+                await writer.WriteLineAsync("Площа: " + Area);
+
+
+            }
+
+        }
+        public void NumberOfSides()
+        {
+            NumberSides = 0;
+        }
+    }
+
+    class Polygon : GeometricFigure
+    {
+        private double CorX;
+        private double CorX2;
+        private double CorY;
+        private double CorY2;
+        private int NumberVerticles;
+        private double Apofema;
+
+        public Polygon(double corX, double corX2, double corY, double corY2, int numberVerticles, double apofema)
+        {
+            CorX = corX;
+            CorX2 = corX2;
+            CorY = corY;
+            CorY2 = corY2;
+            NumberVerticles = numberVerticles;
+            Apofema = apofema;
+        }
+
+        public async void CalculateArea()
+        {
+            double lengthSide = Math.Sqrt((CorX2 - CorX) * (CorX2 - CorX) + (CorY2 - CorY) * (CorY2 - CorY)); ;
+            double perimetr = (NumberVerticles * lengthSide) / 2;
+            Area = perimetr * Apofema;
+            Name = "многокутникв";
+
+            //Console.WriteLine("S многокутника = " + Area);
+            string path = "polygon.txt";
+            using (StreamWriter writer = new StreamWriter(path, true))
+            {
+                await writer.WriteLineAsync("Площа: " + Area);
+
+
+            }
+
+        }
+
+        public void NumberOfSides()
+        {
+            NumberSides = NumberVerticles;
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+               
+            </code>
+        </pre>
+    </details>
+    </div>
+	
+	
+	
+	
+	 <div class="content"> 
+        <p><h2 align="center">Виконання програми</h2></p> 
+        <p><h4 align="center">Виконання завдання №1</h4></p>           
+            <p><img src="laba4/result1.4.png"><p>
+			<p><img src="laba4/result1.1.png"><p>
+			<p><img src="laba4/result1.2.png"><p>
+			<p><img src="laba4/result1.3.png"><p>
+            <p><h4 align="center">Виконання завдання №2</h4></p>                         
+            <img src="laba4/result2.png"> 
+			 <p><h4 align="center">Виконання завдання №3</h4></p>                         
+            <p><img src="laba4/result3.1.png"><p>
+			<p><img src="laba4/result3.2.png"><p>
+			<p><img src="laba4/result3.3.png"><p>
+			 <p><h4 align="center">Виконання завдання №4</h4></p>                         
+            <p><img src="laba4/result4.1.png"><p> 
+			<p><img src="laba4/result4.2.png"><p> 
+			<p><img src="laba4/result4.3.png"><p> 
+			<p><img src="laba4/result4.4.png"><p> 
+			 <p><h4 align="center">Виконання завдання №5</h4></p>                         
+            <p><img src="laba4/result5.1.png"><p> 
+			<p><img src="laba4/result5.2.png"><p> 
+			<p><img src="laba4/result5.3.png"><p> 
+			<p><img src="laba4/result5.4.png"><p> 
+			<p><h4 align="center">Виконання завдання №6</h4></p>                         
+             <p><img src="laba4/result6.1.png"><p> 
+			<p><img src="laba4/result6.2.png"><p> 
+			<p><img src="laba4/result6.3.png"><p> 
+			<p><img src="laba4/result6.4.png"><p> 
+			 <p><img src="laba4/result6.5.png"><p> 
+			<p><img src="laba4/result6.6.png"><p> 
+			
+			
+			<p><h4 align="center">Виконання завдання №7</h4></p>                         
+            <p><img src="laba4/result7.png"><p> 
+			<p><h4 align="center">Виконання завдання №8</h4></p>                         
+             <p><img src="laba4/result8.png"><p> 
+			<p><h4 align="center">Виконання завдання №9</h4></p>                         
+             <p><img src="laba4/result9.1.png"><p> 
+			 <p><img src="laba4/result9.2.png"><p> 
+                  
+    </div>
+    
+    
+    
+    <div class="content">  
+        <p><h2 align="center">Перевірка достовірності</h2></p>
+        <p><h3 align="center">Перевірка завдання №6</h3></p>  
+<p><h4 align="center">Трикутник</h4></p>       		
+        <p><img src="laba4/perevirka2.jpg"><p> 
+		 <p><img src="laba4/perevirka3.jpg"><p> 
+		  <p><img src="laba4/perevirka4.jpg"><p> 
+		   <p><img src="laba4/perevirka5.jpg"><p> 
+		 		<p><h4 align="center">Коло</h4></p>       		
+        <p><img src="laba4/perevirka2.jpg"><p> 
+		 <p><img src="laba4/perevirka6.jpg"><p> 
+		 <p><h4 align="center">Многокутник</h4></p>       		
+        <p><img src="laba4/perevirka2.jpg"><p> 
+		 <p><img src="laba4/perevirka1.png"><p> 
+		 
+		 <p><h3 align="center">Коло вписане та описане в</h3></p>  
+<p><h4 align="center">Трикутник</h4></p>
+<p><img src="laba4/perevirka7.jpg"><p> 
+		 <p><img src="laba4/perevirka8.jpg"><p> 
+		  <p><img src="laba4/perevirka9.jpg"><p> 
+		  <p><h4 align="center">Квадрат</h4></p>
+<p><img src="laba4/perevirka10.jpg"><p> 
+		 <p><img src="laba4/perevirka11.jpg"><p> 
+<p><h4 align="center">Прямокутник</h4></p>
+<p><img src="laba4/perevirka12.jpg"><p> 
+		 
+		 
+    </div>
+    
+    
+                <div class="content">
+                    <p><h2 align="center">Висновок</h2></p>
+                <p>Наслідування, абстрактні класи та інтерфейс - це основні концепції об'єктно-орієнтованого програмування, що дозволяють писати більш структурований код, який можно розширяти та використовувати повторно.
+
+Наслідування дозволяє створювати нові класи, що успадковують властивості та методи від батьківського класу, тим самим зменшуючи кількість дублюючого коду та спрощуючи розробку застосунку. 
+
+Абстрактні класи є частково реалізованим класом, який містить абстрактні методи, що повинні бути реалізовані в дочірніх класах. Це дозволяє вимагати від класів-спадкоємців реалізації певного набору методів та забезпечує більш гнучкий та безпечний процес розробки програм.
+
+Інтерфейс - це набір методів, що повинні бути реалізовані в класі, який реалізує цей інтерфейс. Інтерфейси дозволяють забезпечити наявність певного набору методів у класі, незалежно від його реалізації, тим самим дозволяючи взаємодіяти з класом безпосередньо через інтерфейс, а не через конкретну реалізацію. Також він дає змогу успадковувати багато ''класів''.
+                </p>
+                </div>
+            </div>
+		
+
+
+	</body>
+
+
+
+</html>
