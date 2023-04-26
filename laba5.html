@@ -43,13 +43,12 @@
         <p><h3 align="center">Завдання з лабораторної</h3></p>
        <img src="laba5/task.png">
         <p><h2 align="center">Аналіз задачі</h2></p>
-		Перевантаження методів та операторів є важливим інструментом у програмуванні, оскільки воно дозволяє створювати складні системи, які взаємодіють з об'єктами на звичайний спосіб, спрощує роботу з ними та забезпечує контроль доступу.
+		Для виконання лабораторної роботи cтворимо новий клас "Точка", також будемо використовувати перевантаження методів, які були виконані в минулій роботі та при виконанні нових методів.
 
-Один із підходів до перевантаження методів та операторів полягає в використанні віртуальних функцій у базовому класі та їх перевизначення у похідних класах. Це дозволяє змінювати функціональність об'єкта в залежності від його типу, зберігаючи при цьому його рівень абстракції та можливість розширення.
+Один із підходів до перевантаження методів полягає в використанні віртуальних функцій у базовому класі та їх перевизначення у похідних класах. Це дозволяє змінювати функціональність об'єкта в залежності від його типу, зберігаючи при цьому його рівень абстракції та можливість розширення.
+При перевантаженні бінарних операторів будемо порівнювати площі різних фігур, а при унарних будемо змінювати координати та перераховувати площі, радіус і т.д.
 
-Інший підхід полягає у перевантаженні операторів, який дозволяє забезпечити відповідну функціональність для різних типів даних, що робить роботу з ними більш інтуїтивно зрозумілою та простішою.
-
-Окрему увагу слід приділити індексаторам, які дозволяють робити доступ до масивів об'єктів на звичайний спосіб та забезпечують контроль доступу до цих масивів.
+Окрему увагу слід приділити індексаторам, які дозволяють робити доступ до масивів об'єктів на звичайний спосіб та забезпечують контроль доступу до цих масивів. Будемо виводити масив об'єктів класу "Коло".
 		<p>
 
 
@@ -72,8 +71,1336 @@
         <pre>
             <code>
 			
+//Program.cs
+
+using System.Drawing;
+using System.IO;
+
+namespace OOP_Lab5
+{
+    class Program
+    {
+        static double areaTriangle;
+        static void Main(string[] args)
+        {
+            Console.OutputEncoding = System.Text.Encoding.Unicode;
+
+            Console.WriteLine("Маношина Веронiка\nВарiант 17\nВiк:18\nГрупа IПЗ-11 курс 1\nveronkievipad@gmail.com\n");
+
+            
+
+            while (true)
+            {
+                Console.WriteLine("==============================================");
+                Console.WriteLine("Оберіть фігуру \n1)Трикутник\n2)Многокутник\n3)Коло ");
+                Console.WriteLine("=======або завдання===========================");
+                Console.WriteLine("4)Розрахунок довжини відрізка");
+                Console.WriteLine("5)Порівняння об'єктів");
+                Console.WriteLine("6)Збільшення та зменшення координат");
+                Console.WriteLine("7)Масив об'єктів");
+                Console.WriteLine("==============================================");
+
+                Console.Write("Ваш вибір: ");
+                int chs = int.Parse(Console.ReadLine());
+                Console.WriteLine();
+                switch (chs)
+                {
+                    case 1:
+                        Console.WriteLine("Введіть координати");
+                        Console.Write("1 сторона: ");
+                        double aX = double.Parse(Console.ReadLine());
+                        double aY = double.Parse(Console.ReadLine());
+                        Console.WriteLine();
+                        Console.Write("2 сторона: ");
+                        double bX = double.Parse(Console.ReadLine());
+                        double bY = double.Parse(Console.ReadLine());
+                        Console.WriteLine();
+                        Console.Write("3 сторона: ");
+                        double cX = double.Parse(Console.ReadLine());
+                        double cY = double.Parse(Console.ReadLine());
+                        Console.WriteLine();
+                        Triangle triangle = new Triangle("Трикутник", "", aX, aY, bX, cX, bY, cY, 0, 0);
 
 
+                        triangle.Display();
+                        triangle.SumCorners();
+                        triangle.Area();
+
+                        Console.WriteLine("==Перевіримо теорему Піфагора===");
+                        triangle.Pifagor();
+
+                        areaTriangle = triangle.area1;
+                        break;
+
+                    case 2:
+                        //Console.WriteLine("Введіть координати");
+                        //Console.Write("Cторона многокутника: ");
+                        //double mnogX = double.Parse(Console.ReadLine());
+                        //double mnogY = double.Parse(Console.ReadLine());
+                        //double mnogX2 = double.Parse(Console.ReadLine());
+                        //double mnogY2 = double.Parse(Console.ReadLine());
+                        //Console.WriteLine();
+                        Console.WriteLine("Введіть координати");
+                        Console.Write("Початок: ");
+                        double pX = double.Parse(Console.ReadLine());
+                        double pY = double.Parse(Console.ReadLine());
+                        Console.WriteLine();
+                        Console.Write("Кінець: ");
+                        double pX2 = double.Parse(Console.ReadLine());
+                        double pY2 = double.Parse(Console.ReadLine());
+
+                        Point point = new Point("", "", pX, pY, pX2, pY2, 0, 0, 0,0);
+                        double lengthPol=point.Length();
+
+                        Console.Write("Кількість вершин: ");
+                        int numberV = int.Parse(Console.ReadLine());
+                        Console.WriteLine();
+
+                        Console.Write("Апофема: ");
+                        int apof = int.Parse(Console.ReadLine());
+                        Console.WriteLine();
+
+                        Polygon polygon = new Polygon("Многокутник","",pX,pY,pX2,pY2,0,numberV,lengthPol,apof,0,0);
+
+
+                        polygon.Length();
+                        polygon.Area();
+                        polygon.SumCorners();
+
+                        polygon.Convexity();
+
+                        break;
+
+                    case 3:
+
+                        Console.WriteLine("Введіть радіусу");
+                        Console.Write("Початок: ");
+                        double X1 = double.Parse(Console.ReadLine());
+                        double Y1 = double.Parse(Console.ReadLine());
+                        Console.WriteLine();
+                        Console.Write("Кінець: ");
+                        double X2 = double.Parse(Console.ReadLine());
+                        double Y2 = double.Parse(Console.ReadLine());
+                        Console.WriteLine();
+                        
+                        
+
+                        Circle circle = new Circle("Коло", "Вписане або описане", X1, Y1, 0, 0, 0, X2, Y2,0);
+
+
+                        circle.Radius();
+                        circle.Display();
+                        circle.Area();
+
+                        Point point1 = new Point("", "", 0, 0, 0, 0, 0, 0, 0,0);
+                        //GeometricFigure figure = new GeometricFigure("", "", 0, 0, 0, 0, circle.centreRadius);
+                        Console.WriteLine("==Відшукаємо сторону рівностороннього трикутника вписаного та описаного навколо кола===");
+                        point1.LengthTriangle(circle.centreRadius);
+
+                        circle.Horda();
+
+                        Console.WriteLine("Оберіть фігуру \n1)Трикутник\n2)Квадрат\n3)Прямокутник ");
+                        int choice = int.Parse(Console.ReadLine());
+                        Console.WriteLine();
+
+                        while (true) {
+                            if (choice == 1)
+                            {
+
+                                circle.RadiusTriangle();
+
+
+                            }
+                            if (choice == 2)
+                            {
+
+                                circle.RadiusSquare();
+
+
+
+                            }
+                            if (choice == 3)
+                            {
+
+                                circle.RadiusRectangle();
+
+
+
+                            }
+
+                            Console.WriteLine("======================================================================");
+                            Console.Write("Продовжити виконання програми?Введiть 1 або 0\n(1 - так, 0 - нi): ");
+                            int stop1 = Convert.ToInt32(Console.ReadLine());
+                            Console.WriteLine("======================================================================");
+                            if (stop1 == 0)
+                            {
+
+                                break;
+                            }
+                        }
+
+
+
+                        break;
+
+                    case 4:
+                        Console.WriteLine("==Розрахунок довжини за координатами===");
+                        Console.WriteLine("Введіть координати");
+                        Console.Write("Початок: ");
+                        double lX = double.Parse(Console.ReadLine());
+                        double lY = double.Parse(Console.ReadLine());
+                        Console.WriteLine();
+                        Console.Write("Кінець: ");
+                        double lX2 = double.Parse(Console.ReadLine());
+                        double lY2 = double.Parse(Console.ReadLine());
+                        Point point2 = new Point("","",lX,lY,lX2,lY2,0,0,0,0);
+                        
+                        double lengthv= point2.Length();
+                        Console.WriteLine("Значення сторони = " + lengthv);
+
+                        break;
+
+                    case 5:
+                        Console.WriteLine("Введіть координати");
+                        Console.Write("1 сторона: ");
+                        double oX = double.Parse(Console.ReadLine());
+                        double oY = double.Parse(Console.ReadLine());
+                        Console.WriteLine();
+                        Console.Write("2 сторона: ");
+                        double oX2 = double.Parse(Console.ReadLine());
+                        double oY2 = double.Parse(Console.ReadLine());
+                        Console.WriteLine();
+                        Console.Write("3 сторона: ");
+                        double oX3 = double.Parse(Console.ReadLine());
+                        double oY3 = double.Parse(Console.ReadLine());
+                        Console.WriteLine();
+                        Console.Write("Кількість вершин для многокутника: ");
+                        int numberV1 = int.Parse(Console.ReadLine());
+                        Console.WriteLine();
+                        Console.Write("Апофема: ");
+                        int apof1 = int.Parse(Console.ReadLine());
+                        Console.WriteLine();
+
+                        Point point3 = new Point("", "", oX, oY, oX2, oY2, 0, 0, 0, 0);
+                        double lengthPol1 = point3.Length();
+                        Circle circle1 = new Circle("", "", oX, oY, oX2, oY2, 0, 0, 0, 0);
+                        circle1.Radius();
+                        circle1.Area();
+                        Polygon polygon1 = new Polygon("", "", oX, oY, oX2, oY2, 0, numberV1, lengthPol1, apof1, 0, 0);
+                        polygon1.Length();
+                        polygon1.Area();
+                        Triangle triangle1 = new Triangle("","",oX,oY,oX2,oY2,0,oX3,oY3,0);
+                        triangle1.Area();
+                        Console.WriteLine("Довжина відрізка:" +lengthPol1);
+                        List<double> areas = new List<double>() { circle1.areaCirc,polygon1.areaP,triangle1.area1,point3.plen};
+                        Console.WriteLine("==Оберіть,який об'єкт будемо порівнювати=== ");
+                        Console.Write("Перший:");
+                        Console.WriteLine();
+                        int choiceFirst = int.Parse(Console.ReadLine());
+                        Console.Write("Другий:");
+                        Console.WriteLine();
+                        int choiceSecond = int.Parse(Console.ReadLine());
+                        string path = "task6.txt";
+                        StreamWriter f = new StreamWriter(path, true);
+
+                        Console.WriteLine("=========Результат=================================================");
+                        if (areas[choiceFirst-1]> areas[choiceSecond - 1])
+                        {
+                            Console.WriteLine("Перший обраний об'єкт більше за другий");
+                            
+                            f.WriteLine("Перший обраний об'єкт більше за другий");
+                        }
+                        else if(areas[choiceFirst-1]< areas[choiceSecond - 1])
+                        {
+                            Console.WriteLine("Перший обраний об'єкт менше за другий");
+                            
+                            f.WriteLine("Перший обраний об'єкт менше за другий");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Перший і другий об'єкт рівні");
+
+                            f.WriteLine("Перший і другий об'єкт рівні");
+                        }
+
+                        f.Close();
+
+                        break;
+
+                    case 6:
+                        Console.WriteLine("Введіть координати");
+                        Console.Write("1 сторона: ");
+                        double uX = double.Parse(Console.ReadLine());
+                        double uY = double.Parse(Console.ReadLine());
+                        Console.WriteLine();
+                        Console.Write("2 сторона: ");
+                        double uX2 = double.Parse(Console.ReadLine());
+                        double uY2 = double.Parse(Console.ReadLine());
+                        Console.WriteLine();
+                        Console.Write("3 сторона: ");
+                        double uX3 = double.Parse(Console.ReadLine());
+                        double uY3 = double.Parse(Console.ReadLine());
+                        Console.WriteLine();
+                        Console.Write("Кількість вершин для многокутника: ");
+                        int numberV2 = int.Parse(Console.ReadLine());
+                        Console.WriteLine();
+                        Console.Write("Апофема: ");
+                        int apof2 = int.Parse(Console.ReadLine());
+                        Console.WriteLine();
+                        Point point4 = new Point("", "", uX, uY, uX2, uY2, 0, 0, 0, 0);
+                        double lengthPol2 = point4.Length();
+                        Console.WriteLine("Координата X3: " + uX3);
+                        Console.WriteLine("Координата Y3: " + uY3);
+                        Circle circle2 = new Circle("", "", uX, uY, uX2, uY2, 0, 0, 0, 0);
+                        circle2.Radius();
+                        circle2.Area();
+                        Polygon polygon2 = new Polygon("", "", uX, uY, uX2, uY2, 0, numberV2, lengthPol2, apof2, 0, 0);
+                        polygon2.Length();
+                        polygon2.Area();
+                        Triangle triangle2 = new Triangle("", "", uX, uY, uX2, uY2, 0, uX3, uY3, 0);
+                        triangle2.Area();
+                        Console.WriteLine("Довжина відрізка:" + lengthPol2);
+
+                        Console.WriteLine("1)Збільшить координату на 2 одиниці, всі інші на 1");
+                        Console.WriteLine("2)Зменшить координату на 2 одиниці, всі інші на 1");
+                        Console.Write("Оберіть (1) або (2): ");
+                        int choice1 = int.Parse(Console.ReadLine());
+
+                        Console.WriteLine("=========Результат=================================================");
+                        if (choice1 == 1)
+                        {
+                            Console.WriteLine("=========Точка=================================================");
+                            point4++;
+                            double leng = point4.Length();
+                            Console.WriteLine("Довжина відрізка:" + leng);
+                            Console.WriteLine("===============================================================");
+
+                            Console.WriteLine("=========Коло=================================================");
+                            circle2++;
+      
+                            circle2.Radius();
+                            circle2.Area();
+                            Console.WriteLine("===============================================================");
+
+                            Console.WriteLine("=========Многокутник=================================================");
+                            polygon2++;
+
+                            polygon2.Length();
+                            polygon2.Area();
+                            Console.WriteLine("===============================================================");
+
+                            Console.WriteLine("=========Трикутник=================================================");
+                            triangle2++;
+
+                            triangle2.Area();
+                            Console.WriteLine("====================================================================");
+
+                        }
+
+                        if (choice1 == 2)
+                        {
+                            Console.WriteLine("=========Точка=================================================");
+                            point4--;
+                            double leng = point4.Length();
+                            Console.WriteLine("Довжина відрізка:" + leng);
+                            Console.WriteLine("===============================================================");
+
+                            Console.WriteLine("=========Коло=================================================");
+                            circle2--;
+
+                            circle2.Radius();
+                            circle2.Area();
+                            Console.WriteLine("===============================================================");
+
+                            Console.WriteLine("=========Многокутник=================================================");
+                            polygon2--;
+
+                            polygon2.Length();
+                            polygon2.Area();
+                            Console.WriteLine("===============================================================");
+
+                            Console.WriteLine("=========Трикутник=================================================");
+                            triangle2--;
+
+                            triangle2.Area();
+                            Console.WriteLine("====================================================================");
+
+                        }
+
+                        break;
+
+                    case 7:
+
+                        Console.WriteLine("Введіть розмір масиву");
+                        int size = int.Parse(Console.ReadLine());
+                        CircleArray circleArray = new CircleArray(size);
+                        for (int i = 0; i < circleArray.Length; i++)
+                        {
+                            Console.WriteLine("Введіть координати");
+                            Console.Write("Початок: ");
+                            double mX = double.Parse(Console.ReadLine());
+                            double mY = double.Parse(Console.ReadLine());
+                            Console.WriteLine();
+                            Console.Write("Кінець: ");
+                            double mX2 = double.Parse(Console.ReadLine());
+                            double mY2 = double.Parse(Console.ReadLine());
+                            Console.WriteLine();
+
+                            circleArray[i] = new Circle("Коло", "", mX,mY,mX2,mY2,0,0,0,0);
+                            circleArray[i].Radius();
+                            circleArray[i].Area();
+                        }
+
+                        string path1 = "task7.txt";
+                        StreamWriter f1 = new StreamWriter(path1, true);
+
+                        Console.WriteLine("=========Результат=================================================");
+                        for (int i = 0; i < circleArray.Length; i++)
+                        {
+                            int num = i + 1;
+                            Console.WriteLine("Коло №" + num + ": радіус = "+ circleArray[i].centreRadius + " з cерединою = (" + circleArray[i].centreX + ";" + circleArray[i].centreY + ") та площею = " + circleArray[i].areaCirc);
+                            f1.WriteLine("Коло №" + num + ": радіус = "+ circleArray[i].centreRadius + " з cерединою = (" + circleArray[i].centreX + ";" + circleArray[i].centreY + ") та площею = " + circleArray[i].areaCirc);
+                        }
+                        f1.Close();
+                        break;
+                }
+                Console.WriteLine("======================================================================");
+                Console.Write("Продовжити виконання програми?Введiть 1 або 0\n(1 - так, 0 - нi): ");
+                int stop = Convert.ToInt32(Console.ReadLine());
+                Console.WriteLine("======================================================================");
+                if (stop == 0)
+                {
+                    
+                    break;
+                }
+            }
+        }
+    }
+}
+
+//GeometricFigure.cs
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace OOP_Lab5
+{
+    class GeometricFigure 
+    {
+        private string Name;
+        private string Type;
+        private double CorX;
+        private double CorY;
+        private double CorX2;
+        private double CorY2;
+        private double CentreRadius;
+       
+        
+        public GeometricFigure()
+        {
+            Name = "";
+            Type = "";
+            CorX = 0;
+            CorY = 0;
+            CorX2 = 0;
+            CorY2 = 0;
+            CentreRadius = 0;
+        }
+        public GeometricFigure(string name, string type, double corX, double corY, double corX2, double corY2,double centreRadius)
+        {
+            Name = name;
+            Type = type;
+            CorX = corX;
+            CorY = corY;
+            CorX2 = corX2;
+            CorY2 = corY2;
+            CentreRadius = centreRadius;
+        }
+
+        public GeometricFigure(GeometricFigure geometricFigure)
+        {
+            Console.Write("Введіть Х: ");
+            CorX = double.Parse(Console.ReadLine());
+            Console.WriteLine();
+            Console.Write("Введіть Y: ");
+            CorY = double.Parse(Console.ReadLine());
+            Console.WriteLine();
+            Console.Write("Введіть Х2: ");
+            CorX2 = double.Parse(Console.ReadLine());
+            Console.WriteLine();
+            Console.Write("Введіть Y2: ");
+            CorY2 = double.Parse(Console.ReadLine());
+            Console.WriteLine();
+
+            CorX =geometricFigure.CorX;
+            CorY=geometricFigure.CorY;
+            CorX2 = geometricFigure.CorX2;
+            CorY2 = geometricFigure.CorY2;
+            CentreRadius = geometricFigure.CentreRadius;
+        }
+
+        public string name
+        {
+            get { return Name; }
+            set { Name = value; }
+        }
+
+        public string type
+        {
+            get { return Type; }
+            set { Type = value; }
+        }
+        public double corX
+        {
+            get { return CorX; }
+            set { CorX = value; }
+        }
+        public double corY
+        {
+            get { return CorY; }
+            set { CorY = value; }
+        }
+
+        public double corX2
+        {
+            get { return CorX2; }
+            set { CorX2 = value; }
+        }
+        public double corY2
+        {
+            get { return CorY2; }
+            set { CorY2 = value; }
+        }
+
+        public double centreRadius
+        {
+            get { return CentreRadius; }
+            set { CentreRadius = value; }
+        }
+
+        public void Display()
+        {
+            Console.WriteLine("Назва фігури = " + name);
+            Console.WriteLine("Координата Х = " + corX);
+            Console.WriteLine("Координата Y = " + corY);
+        }
+        public virtual double Length()
+        {
+            Console.WriteLine("Координата X1: " + corX);
+            Console.WriteLine("Координата Y1: " + corY);
+            Console.WriteLine("Координата X2: " + corX2);
+            Console.WriteLine("Координата Y2: " + corY2);
+            
+            return 0;
+        }
+
+        public virtual void LengthTriangle(double radius)
+        {
+
+            double sideIn = radius * (2 * Math.Sqrt(3));
+            double sideOut = radius * Math.Sqrt(3);
+            Console.WriteLine("Cторона вписаного трикутника = "+sideIn);
+            Console.WriteLine("Cторона описаного трикутника = " + sideOut);
+        }
+
+        public virtual void Convexity()
+        {
+            Console.WriteLine("==Визначимо, чи опуклий наш многокутник===");
+
+        }
+
+        public virtual void Pifagor()
+        {
+            Console.WriteLine("==Перевіримо теорему Піфагора==");
+        }
+
+        public virtual void Horda()
+        {
+            Console.WriteLine("==Обрахуємо хорду за допомогою радіуса та центрального кута==");
+        }
+
+        //public virtual void LengthTriangle()
+        //{
+        //    LengthSide = Math.Sqrt((corX2 - corX) * (corX2 - corX) + (corY2 - corY) * (corY2 - corY));
+        //}
+    }
+
+    
+}
+
+//Circle.cs
+
+using System;
+using System.Collections.Generic;
+using System.Data.Common;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace OOP_Lab5
+{
+    class Circle : GeometricFigure
+    {
+        private double CentreX;
+        private double CentreY;
+        private double AreaCirc;
+        public Circle()
+        {
+           
+            CentreX = 0;
+            CentreY = 0;
+            AreaCirc = 0;
+           
+        }
+
+        public Circle(string name, string type, double corX, double corY, double corX2, double corY2, double centreRadius, double centreX, double centreY,double areaCirc) : base(name, type, corX, corY, corX2, corY2, centreRadius)
+        {
+            
+            CentreX = centreX;
+            CentreY = centreY;
+            AreaCirc = areaCirc;
+           
+        }
+
+        public Circle(Circle circle)
+        {
+            
+
+            Console.Write("Введіть Xcentr: ");
+            CentreX = double.Parse(Console.ReadLine());
+            Console.WriteLine();
+
+            Console.Write("Введіть Ycentr: ");
+            CentreY = double.Parse(Console.ReadLine());
+            Console.WriteLine();
+
+            CentreX = circle.CentreX;
+            CentreY = circle.CentreY;
+            
+        }
+        
+
+       
+        public double centreX
+        {
+            get { return CentreX; }
+            set { CentreX = value; }
+        }
+
+        public double centreY 
+        {
+            get { return CentreY; }
+            set { CentreY = value; }
+        }
+
+        public double areaCirc
+        {
+            get { return AreaCirc; }
+            set { AreaCirc = value; }
+        }
+
+        public static bool operator >(Circle obj1, object obj2)
+        {
+            Circle otherFigure = (Circle)obj2;
+
+            return obj1.areaCirc > otherFigure.areaCirc;
+        }
+
+        public static bool operator <(Circle obj1, object obj2)
+        {
+            Circle otherFigure = (Circle)obj2;
+
+            return obj1.areaCirc < otherFigure.areaCirc;
+        }
+
+        public static Circle operator ++(Circle obj1)
+        {
+            obj1.corX+=2;
+            obj1.corY+=2;
+            obj1.corX2++;
+            obj1.corY2++;
+
+            return obj1;
+        }
+
+        public static Circle operator --(Circle obj1)
+        {
+            obj1.corX-=2;
+            obj1.corY-=2;
+            obj1.corX2--;
+            obj1.corY2--;
+
+            return obj1;
+        }
+
+        public void Display()
+        {
+            Console.WriteLine("Координата cередини кола Х = "+centreX);
+            Console.WriteLine("Координата середини кола Y = " + centreY);
+            Console.WriteLine("Радіус = " + centreRadius);
+        }
+
+        public async void Radius()
+        {
+            string path = "circle.txt";
+            centreRadius = Math.Sqrt((corX2 - corX) * (corX2 - corX) + (corY2 - corY) * (corY2 - corY));
+            centreX = (corX + corX2 )/ 2;
+            centreY = (corY + corY2) / 2;
+
+
+            using (StreamWriter writer = new StreamWriter(path, true))
+            {
+                await writer.WriteLineAsync("Радіус: " + centreRadius);
+                await writer.WriteLineAsync("X centre: " + centreX);
+                await writer.WriteLineAsync("Y centre: " + centreY);
+
+            }
+
+        }
+
+       
+        public async void Area()
+        {
+            areaCirc = centreRadius * centreRadius * Math.PI;
+            Console.WriteLine("S трикутника = " + areaCirc);
+
+            string path = "circle.txt";
+            using (StreamWriter writer = new StreamWriter(path, true))
+            {
+                await writer.WriteLineAsync("Площа: " + areaCirc);
+                
+
+            }
+        }
+
+        public override void Horda()
+        {
+            base.Horda();
+
+            Console.Write("Введіть значення центрального кута: ");
+            double centrCorner = double.Parse(Console.ReadLine());
+            Console.WriteLine();
+            double horda = 2 * centreRadius * Math.Sin(centrCorner / 2);
+            Console.WriteLine("Довжина хорди = "+horda);
+        }
+
+
+        public async void RadiusTriangle()
+        {
+            Console.WriteLine("Введіть значення сторон трикутника");
+            Console.Write("1 cторона:");
+            double length1=double.Parse(Console.ReadLine());
+            Console.WriteLine();
+            Console.Write("2 cторона:");
+            double length2 = double.Parse(Console.ReadLine());
+            Console.WriteLine();
+            Console.Write("3 cторона:");
+            double length3 = double.Parse(Console.ReadLine());
+            Console.WriteLine();
+            double halfP;
+            halfP = (length1 + length2 + length3) / 2;
+            double areaTriangle=Math.Sqrt(halfP*(halfP-length1)*(halfP - length2)*(halfP - length3));
+            double inRadius = areaTriangle / halfP;
+            double outRadius = (length1 * length2 * length3) / (4 * areaTriangle);
+
+            Console.WriteLine("R = "+outRadius);
+            Console.WriteLine("r = " + inRadius);
+
+
+            string path = "circle.txt";
+            using (StreamWriter writer = new StreamWriter(path, true))
+            {
+                await writer.WriteLineAsync("R: " + outRadius);
+                await writer.WriteLineAsync("r: " + inRadius);
+
+            }
+        }
+
+        public async void RadiusSquare()
+        {
+            Console.Write("Cторона квадрата:");
+            double a = double.Parse(Console.ReadLine());
+            Console.WriteLine();
+            double inRadius = a / 2;
+            double outRadius = a / Math.Sqrt(2);
+
+            Console.WriteLine("R = " + outRadius);
+            Console.WriteLine("r = " + inRadius);
+
+            string path = "circle.txt";
+            using (StreamWriter writer = new StreamWriter(path, true))
+            {
+                await writer.WriteLineAsync("R: " + outRadius);
+                await writer.WriteLineAsync("r: " + inRadius);
+
+            }
+        }
+
+        public async void RadiusRectangle()
+        {
+            Console.Write("Cторона 1:");
+            double a = double.Parse(Console.ReadLine());
+            Console.WriteLine();
+
+            Console.Write("Cторона 2:");
+            double b = double.Parse(Console.ReadLine());
+            Console.WriteLine();
+
+            if (a <= b)
+            {
+                Console.WriteLine("Спробуйте ще раз!:");
+                return;
+            }
+
+            double outRadius = (Math.Sqrt(a * a - b * b)) / 2;
+
+            Console.WriteLine("R = " + outRadius);
+
+            string path = "circle.txt";
+            using (StreamWriter writer = new StreamWriter(path, true))
+            {
+                await writer.WriteLineAsync("R: " + outRadius);
+
+            }
+        }
+    }
+
+   
+
+}
+
+//Triangle.cs
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Xml.Linq;
+
+namespace OOP_Lab5
+{
+    class Triangle:GeometricFigure
+    {
+        
+       
+        private double CorX3;
+        private double CorY3;
+        private double Area1;
+
+        public Triangle()
+        {
+            CorX3 = 0;
+            CorY3 = 0;
+            Area1 = 0;
+
+        }
+        public Triangle(string name, string type, double corX, double corY, double corX2, double corY2, double centreRadius, double corX3, double corY3, double area1) : base(name, type, corX, corY, corX2, corY2,centreRadius)
+        {
+            CorX3 = corX3;
+            CorY3 = corY3;
+            Area1 = area1;
+        }
+
+        public Triangle(Triangle triangle)
+        { 
+            Console.Write("Введіть X3: ");
+            CorX3 = double.Parse(Console.ReadLine());
+            Console.WriteLine();
+
+            Console.Write("Введіть Y3: ");
+            CorY3 = double.Parse(Console.ReadLine());
+            Console.WriteLine();
+
+            CorX3 = triangle.CorX3;
+            CorY3 = triangle.CorY3;
+            Area1 = triangle.Area1;
+        }
+
+ 
+        public double corX3
+        {
+            get { return CorX3; }
+            set { CorX3 = value; }
+        }
+
+        public double corY3
+        {
+            get { return CorY3; }
+            set { CorY3 = value; }
+        }
+
+        public double area1
+        {
+            get { return Area1; }
+            set { Area1 = value; }
+        }
+
+        public static bool operator >(Triangle obj1, object obj2)
+        {
+            Triangle otherFigure = (Triangle)obj2;
+
+            return obj1.area1 > otherFigure.area1;
+        }
+
+        public static bool operator <(Triangle obj1, object obj2)
+        {
+            Triangle otherFigure = (Triangle)obj2;
+
+            return obj1.area1 < otherFigure.area1;
+        }
+
+        public static Triangle operator ++(Triangle obj1)
+        {
+
+            obj1.corX += 2;
+            obj1.corY += 2;
+            obj1.corX2++;
+            obj1.corY2++;
+            obj1.corX3++;
+            obj1.corY3++;
+
+            return obj1;
+        }
+
+        public static Triangle operator --(Triangle obj1)
+        {
+            obj1.corX -= 2;
+            obj1.corY -= 2;
+            obj1.corX2--;
+            obj1.corY2--;
+            obj1.corX3--;
+            obj1.corY3--;
+
+            return obj1;
+        }
+        public new void Display()
+        {
+            //GeometricFigure figure = new GeometricFigure(name, type, corX, corY);
+           // figure.Display();
+            Console.WriteLine("Координата Х2 = " + corX2);
+            Console.WriteLine("Координата Y2 = " + corY2);
+            Console.WriteLine("Координата Х3 = " + corX3);
+            Console.WriteLine("Координата Y3 = " + corY3);
+        }
+
+        public async void SumCorners()
+        {
+            int corners = (3 - 2) * 180;
+            Console.WriteLine("Cума кутів = " + corners);
+
+            string path = "triangle.txt";
+            using (StreamWriter writer = new StreamWriter(path, true))
+            {
+                await writer.WriteLineAsync("Cума кутів: " + corners);
+
+
+            }
+        }
+        public async void Area()
+        {
+            double length1 = Math.Sqrt((corX2 - corX) * (corX2 - corX) + (corY2 - corY) * (corY2 - corY));
+            double length2 = Math.Sqrt((corX3 - corX2) * (corX3 - corX2) + (corY3 - corY2) * (corY3 - corY2));
+            double length3 = Math.Sqrt((corX - corX3) * (corX - corX3) + (corY - corY3) * (corY - corY3));
+
+            double halfP = (length1 + length2 + length3) / 2;
+            area1 = Math.Sqrt(halfP * (halfP - length1) * (halfP - length2) * (halfP - length3));
+
+            Console.WriteLine("S трикутника = "+area1);
+
+            string path = "triangle.txt";
+            using (StreamWriter writer = new StreamWriter(path, true))
+            {
+                await writer.WriteLineAsync("Площа: " + area1);
+
+
+            }
+        }
+
+        public override void Pifagor()
+        {
+            base.Pifagor();
+            Console.Write("Введіть 1 катет трикутника: ");
+            double catet1 = double.Parse(Console.ReadLine());
+            Console.WriteLine();
+            Console.Write("Введіть 2 катет трикутника: ");
+            double catet2 = double.Parse(Console.ReadLine());
+            Console.WriteLine();
+            Console.Write("Введіть гіпотенузу трикутника: ");
+            double hypot = double.Parse(Console.ReadLine());
+            Console.WriteLine();
+
+            double pifagor = Math.Sqrt((catet1 * catet1) + (catet2 * catet2));
+
+            Console.WriteLine("=========Результат=================================================");
+
+            if (hypot == pifagor)
+            {
+                Console.WriteLine("Ваш трикутник прямокутний. Теорема Піфагора працює коректно.");
+            }
+            else
+            {
+                Console.WriteLine("Ваш трикутник не прямокутний. Теорема Піфагора працює коректно тільки з прямокутними трикутниками.");
+            }
+
+
+        }
+    }
+
+   
+    
+}
+
+
+//Polygon.cs
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace OOP_Lab5
+{
+    class Polygon:GeometricFigure
+    {
+        private int NumberVertices;
+        private double LengthSide;
+        private double Apofema;
+        private double Perimetr;
+        private double AreaP;
+        public Polygon()
+        {
+            NumberVertices = 0;
+            LengthSide = 0;
+            Apofema = 0;
+            Perimetr = 0;
+            AreaP = 0;
+        }
+        public Polygon(string name, string type, double corX, double corY, double corX2, double corY2, double centreRadius, int numberVertices, double lengthSide, double apofema,double perimetr,double areaP) : base(name, type, corX, corY, corX2, corY2,centreRadius)
+        {
+            NumberVertices = numberVertices;
+            LengthSide = lengthSide;
+            Apofema = apofema;
+            Perimetr= perimetr;
+            AreaP = areaP;
+        }
+
+        public Polygon(Polygon polygon)
+        {
+            Console.Write("Введіть к-ть кутів: ");
+            NumberVertices = int.Parse(Console.ReadLine());
+            Console.WriteLine();
+
+            Console.Write("Введіть довжину сторони: ");
+            LengthSide = double.Parse(Console.ReadLine());
+            Console.WriteLine();
+
+            Console.Write("Введіть апофему: ");
+            Apofema = double.Parse(Console.ReadLine());
+            Console.WriteLine();
+
+           
+
+            NumberVertices = polygon.NumberVertices;
+            LengthSide = polygon.LengthSide;
+            Apofema = polygon.Apofema;
+            Perimetr= polygon.Perimetr;
+        }
+        public int numberVerticles
+        {
+            get { return NumberVertices; }
+            set { NumberVertices = value; }
+        }
+
+        public double lengthSide
+        {
+            get { return LengthSide; }
+            set { LengthSide = value; }
+        }
+
+        public double apofema
+        {
+            get { return Apofema; }
+            set { Apofema = value; }
+        }
+
+        public double perimetr
+        {
+            get { return Perimetr; }
+            set { Perimetr = value; }
+        }
+
+        public double areaP
+        {
+            get { return AreaP; }
+            set { AreaP = value; }
+        }
+        public static bool operator >(Polygon obj1, object obj2)
+        {
+            Polygon otherFigure = (Polygon)obj2;
+
+            return obj1.areaP>otherFigure.areaP;
+        }
+
+        public static bool operator <(Polygon obj1, object obj2)
+        {
+            Polygon otherFigure = (Polygon)obj2;
+
+            return obj1.areaP < otherFigure.areaP;
+        }
+
+        public static Polygon operator ++(Polygon obj1)
+        {
+            obj1.lengthSide++;
+
+
+            return obj1;
+        }
+
+        public static Polygon operator --(Polygon obj1)
+        {
+            obj1.lengthSide--;
+           
+
+            return obj1;
+        }
+        public void Display()
+        {
+            Console.WriteLine("Кількість вершин = " + numberVerticles);
+            Console.WriteLine("Довжина сторони = " + lengthSide);
+
+        }
+
+        public async void SumCorners()
+        {
+            int corners = (numberVerticles - 2) * 180;
+            Console.WriteLine("Cума кутів = " + corners);
+
+            string path = "polygon.txt";
+            using (StreamWriter writer = new StreamWriter(path, true))
+            {
+                await writer.WriteLineAsync("Cума кутів: " + corners);
+
+
+            }
+
+        }
+
+        public new void Length()
+        {
+            //lengthSide = Math.Sqrt((corX2 - corX) * (corX2 - corX) + (corY2 - corY) * (corY2 - corY)); 
+            Perimetr = (numberVerticles * lengthSide) / 2;
+            
+
+        }
+        public async void Area()
+        {
+
+            areaP = Perimetr * apofema;
+
+            Console.WriteLine("S многокутника = " + areaP);
+
+            string path = "polygon.txt";
+            using (StreamWriter writer = new StreamWriter(path, true))
+            {
+                await writer.WriteLineAsync("Площа: " + areaP);
+
+
+            }
+        }
+
+        public override void Convexity()
+        {
+            base.Convexity();
+
+            List<double> pointsX = new List<double>();
+            List<double> pointsY = new List<double>();
+
+            for (int i = 0; i < numberVerticles; i++)
+            {
+                Console.Write("Введіть Х: ");
+                corX=double.Parse(Console.ReadLine());
+                Console.WriteLine();
+                pointsX.Add(corX);
+                Console.Write("Введіть Y: ");
+                corY = double.Parse(Console.ReadLine());
+                Console.WriteLine();
+                pointsY.Add(corY);
+            }
+
+            bool flag = false;
+           
+            for(int i = 0; i < numberVerticles; i++)
+            {
+                double x1 = pointsX[(i + 1) % numberVerticles] - pointsX[i];
+                double y1 = pointsY[(i + 1) % numberVerticles] - pointsY[i];
+               
+                double x2 = pointsX[(i + 2)%numberVerticles] - pointsX[(i+1)%numberVerticles];
+                double y2 = pointsY[(i + 2) % numberVerticles] - pointsY[(i + 1) % numberVerticles];
+
+                double product=(x1*y2)-(y1*x2);
+                if (product < 0)
+                {
+                    flag = true;
+                    Console.WriteLine("Многокутник неопуклий!");
+                    break;
+                }
+            }
+
+            if (!flag)
+            {
+                Console.WriteLine("Многокутник опуклий!");
+            }
+            
+        }
+    }
+
+    
+}
+
+//Point.cs
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace OOP_Lab5
+{
+    class Point : GeometricFigure
+    {
+        private double CorX3;
+        private double CorY3;
+        private double Plen;
+        public Point()
+        {
+            CorX3 = 0;
+            CorY3 = 0;
+            Plen = 0;
+        }
+        public Point(string name, string type, double corX, double corY, double corX2, double corY2, double lengthSide, double corX3, double corY3,double plen) : base(name, type, corX, corY, corX2, corY2,lengthSide)
+        {
+            CorX3 = corX3;
+            CorY3 = corY3;
+            Plen = plen;
+        }
+
+        public Point(Point point)
+        {
+            Console.Write("Введіть X: ");
+            CorX3 = double.Parse(Console.ReadLine());
+            Console.WriteLine();
+
+            Console.Write("Введіть Y2: ");
+            CorY3 = double.Parse(Console.ReadLine());
+            Console.WriteLine();
+
+            CorX3 = point.CorX3;
+            CorY3 = point.CorY3;
+        }
+
+        public double plen
+        {
+            get { return Plen; }
+            set { Plen = value; }
+        }
+
+        public static bool operator >(Point obj1, object obj2)
+        {
+            Point otherFigure = (Point)obj2;
+
+            return obj1.plen > otherFigure.plen;
+        }
+
+        public static bool operator <(Point obj1, object obj2)
+        {
+            Point otherFigure = (Point)obj2;
+
+            return obj1.plen < otherFigure.plen;
+        }
+
+        public static Point operator ++(Point obj1)
+        {
+
+            obj1.corX += 2;
+            obj1.corY += 2;
+            obj1.corX2++;
+            obj1.corY2++;
+
+            return obj1;
+        }
+
+        public static Point operator --(Point obj1)
+        {
+            obj1.corX -= 2;
+            obj1.corY -= 2;
+            obj1.corX2--;
+            obj1.corY2--;
+
+            return obj1;
+        }
+        public override double Length()
+        {
+            base.Length();
+            double lengthSide = Math.Sqrt((corX2 - corX) * (corX2 - corX) + (corY2 - corY) * (corY2 - corY));
+            plen = lengthSide;
+            return lengthSide;
+        }
+
+        public override void LengthTriangle(double radius)
+        {
+            base.LengthTriangle(radius);
+        }
+
+
+    }
+}
+
+
+//CircleArray.cs
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace OOP_Lab5
+{
+    class CircleArray
+    {
+        Circle[] circles;
+
+        public CircleArray(int size)
+        {
+            circles = new Circle[size];
+        }
+
+        public Circle this[int index] 
+        {
+            get
+            {
+                return circles[index]; 
+            }
+            set
+            {
+                circles[index] = value;
+            }
+        }
+
+        public int Length 
+        {
+            get { return circles.Length; }
+        }
+    }
+}
 
 
 
@@ -166,11 +1493,11 @@
     
                 <div class="content">
                     <p><h2 align="center">Висновок</h2></p>
-                <p>Перевантаження методів - це потужний інструмент у програмуванні об'єктно-орієнтованих мов. Це дозволяє перевизначати функціональність, що визначена в базовому класі, зберігаючи при цьому рівень абстракції та розширюючи функціональність об'єкта в похідному класі.
+                <p>Перевантаження методів - це потужний інструмент у програмуванні об'єктно-орієнтованих мов. Це дозволяє перевизначати функціональність, що визначена в базовому класі, зберігаючи при цьому рівень абстракції та розширюючи функціональність об'єкта в похідному класі. Ми реалізували це в різних методах нашого консольного застосунку.
 
-Перевантаження бінарних та унарних операторів - це додатковий механізм для спрощення роботи з об'єктами. Це дозволяє визначити функціональність операцій для відповідних класів, що дозволяє роботу з ними на звичайний спосіб.
+Перевантаження бінарних та унарних операторів - це додатковий механізм для спрощення роботи з об'єктами. Це дозволяє визначити функціональність операцій для відповідних класів, що дозволяє роботу з ними на звичайний спосіб. На основі цього в нашій програмі ми можемо порівнювати площі різних об'єктів або змінити значення координатів, відповідно і площі фігур теж.
 
-Щодо індексаторів, то вони дозволяють забезпечувати доступ до масиву об'єктів як до єдиного об'єкту. Це значно спрощує роботу з масивами та дозволяє забезпечити їх інкапсуляцію та контроль доступу.
+Щодо індексаторів, то вони дозволяють забезпечувати доступ до масиву об'єктів як до єдиного об'єкту. Це значно спрощує роботу з масивами та дозволяє забезпечити їх інкапсуляцію та контроль доступу. Завдяки цьому ми можемо обрати кількість екземплярів класу "Кола" та вивести всі їх значення у консоль.
 
                 </p>
                 </div>

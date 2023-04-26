@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+
+		<meta charset="UTF-8">
+		<title>Лабораторна робота №5</title>
+
+
+	</head>
+	<body>
+	
+		<input type="checkbox" id="menu-trigger" class="menu-trigger">
+   <label for="menu-trigger"></label>
+        <div class="menu">
+            <ul class="menu">
+                <li><a class="button" href="index.html">Головна сторінка</a></li>
+                <li><a  class="button_current" href="laba1.html">Лабораторна робота №1</a></li>
+                <li><a  class="button" href="laba2.html">Лабораторна робота №2</a></li>
+                <li><a  class="button" href="laba3.html">Лабораторна робота №3</a></li>
+                <li><a  class="button" href="laba4.html">Лабораторна робота №4</a></li>
+                <li><a  class="button" href="laba5.html">Лабораторна робота №5</a></li>
+                <li><a  class="button" href="lab6.html">Лабораторна робота №6</a></li>
+                
+              </ul>
+            </div>
+			
+	 <div class="content">
+            
+                <p><h2 align="center">Умова задачі</h2></p>
+                <p>1. Створити директорію Lab6, в якій будуть розміщені файли проєкту
+лабораторної роботи №6.
+<p>
+<p>
+2. Виконати завдання свого варіанту у вигляді одного консольного проекту.
+<p>
+<p>
+3. Для кожного класу передбачити окремий файл.<p>
+            </div>
+            <div class="content">
+        <p><h3 align="center">Завдання з лабораторної</h3></p>
+       <img src="laba6/task.png">
+        <p><h2 align="center">Аналіз задачі</h2></p>
+		Для виконання лабораторної роботи спочатку визначимо класи та зв'язки між ними. Всього в нас буде 7 класів: SmartMirror, SmartHelper, Webcam, Battery, Wifi, PasswordException, Account. Зв'язки: Account асоціація SmartMirror; Battery композиція SmartMirror; Wifi, Smarthelper агрегація SmartMirror; Webcam наслідування SmartMirror.
+		Використовувати події за допомогою делегатів ми будемо в голосовому модулю, який буде нас про щосб сповіщати. Реалізовувати визначення та обробку виключних ситуацій ми будемо під час введення паролей для вай-фаю, веб-камери. Вони будуть мати свої власні паролі, якщо не буде співпадіння, то програма буде викидувати помилку.
+		<p>
+
+
+
+
+    
+</p>
+</div>
+<div class="content">
+        <p><h2 align="center">Діаграма класів</h2></p>
+		 
+        <p><img src="laba6/diagram.png"><p>
+
+    </div>
+	
+	
+	 <div class="code">
+        <details>
+            <summary>Код програми</summary>
+        <pre>
+            <code>
+			
+			//Program.cs
+			
+			namespace OOP_Lab_6
+{
+    class Program
+    {
+        private static Battery battery = new Battery();
+
+        static void Main(string[] args)
+        {
+            Console.OutputEncoding = System.Text.Encoding.Unicode;
+            Console.InputEncoding = System.Text.Encoding.Unicode;
+            Console.WriteLine("Маношина Веронiка\nВарiант 17\nВiк:18\nГрупа IПЗ-11 курс 1\nveronkievipad@gmail.com\n");
+
+            SmartMirror mirror = new SmartMirror(battery);
+            Webcam webcam = new Webcam(battery);
+
+            mirror.Display();
+
+            try
+            {
+                mirror.EnterPassword();
+            }
+            catch (PasswordException e)
+            {
+                Console.WriteLine("!Помилка!");
+                Console.WriteLine(e.Message);
+                Console.WriteLine("Метод: " + e.TargetSite);
+                Environment.Exit(1);
+            }
+
+            mirror.CreateAccount();
+           
+
+            while (true)
+            {
+                if (battery.charge <= 40)
+                {
+                    Console.WriteLine("=====================================================================");
+                    Console.WriteLine("Заряд акумулятора нижче 40%");
+                    Console.WriteLine("Поставити на зарядку дзеркало? Введiть 1 або 0\n(1 - так, 0 - нi): ");
+                    int charger = int.Parse(Console.ReadLine());
+                    
+                    if (charger == 1)
+                    {
+                        battery.charge = 100;
+                    }
+                }
+                else if (battery.charge <= 0)
+                {
+                    Environment.Exit(1);
+                }
+
+                Console.WriteLine($"========Акумулятор: {battery.charge}% =======================================");
+                Console.WriteLine("1)Розрахунок норми ваги");
+                Console.WriteLine("2)Розрахунок норми калорій на день");
+                Console.WriteLine("3)Вибір зачіски");
+                Console.WriteLine("4)Вимір температури");
+                Console.WriteLine("5)Відеодзвінок");
+                Console.WriteLine("=============================================");
+                Console.Write("Ваш вибір: ");
+                int chs = Convert.ToInt32(Console.ReadLine());
+                
+                switch (chs)
+                {
+                    case 1:
+                        mirror.NormWeight();
+                        battery.charge -= 25;
+                        break;
+
+                    case 2:
+                        mirror.Calories();
+                        battery.charge -= 25;
+                        break;
+
+                    case 3:
+                        mirror.ChoiceHairstyle();
+                        battery.charge -= 25;
+                        break;
+
+                    case 4:
+                        mirror.TestTemp();
+                        battery.charge -= 25;
+                        break;
+
+                    case 5:
+
+                        try
+                        {
+                            webcam.CheckPassword();
+                        }
+                        catch (PasswordException e)
+                        {
+                            Console.WriteLine("!Помилка!");
+                            Console.WriteLine(e.Message);
+                            Console.WriteLine("Метод: " + e.TargetSite);
+                            Environment.Exit(1);
+                        }
+                       
+                        mirror.VideoChat();
+                        battery.charge -= 20;
+
+                        break;
+
+                }
+
+                Console.WriteLine("Продовжити виконання програми?Введiть 1 або 0\n(1 - так, 0 - нi): ");
+                int stop = Convert.ToInt32(Console.ReadLine());
+
+                if (stop == 0)
+                {
+                    break;
+                }
+            }
+        }
+    }
+}
+
+//SmartMirror.cs
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace OOP_Lab_6
+{
+    internal class SmartMirror
+    {
+        private string Name;
+        private string Model;
+
+        Account account = new Account();
+        Battery battery;
+        Wifi wifi;
+        Wifi wifi2;
+        Wifi wifi3;
+        SmartHelper helper;
+        public SmartMirror(Battery battery)
+        {
+            Name = "";
+            Model = "21235MM";
+            this.battery = battery;
+            wifi = new Wifi("WIFI_1","123");
+            wifi2 = new Wifi("WIFI_2", "456");
+            wifi3 = new Wifi("WIFI_3", "789");
+            helper = new SmartHelper(); 
+        }
+
+        public string name
+        {
+            get { return Name; }
+            set { Name = value; }
+        }
+
+        public string model
+        {
+            get { return Model; }
+            set { Model = value; }
+        }
+
+        public void EnterPassword()
+        {
+            helper.Display();
+            helper.Notify += HandleTextWritten;
+            helper.Text($"{helper.name}: оберіть доступне Wi-Fi підключення та введіть пароль, щоб продовжити роботу з дзеркалом! ");
+            helper.Notify -= HandleTextWritten;
+            Console.WriteLine($"1){wifi.name}\n2){wifi2.name}\n3){wifi3.name}");
+
+            Console.Write($"Ваш вибір: ");
+            int choice = int.Parse(Console.ReadLine());
+
+            
+            Console.Write($"Введіть пароль: ");
+            string yourPassword = Console.ReadLine();
+
+
+            if(choice==1 && yourPassword!=wifi.password)
+            {
+                
+                PasswordException ex = new PasswordException(string.Format("Неправильний пароль {0}", wifi.name));
+               
+                throw ex;
+            }
+            else if (choice == 2 && yourPassword != wifi2.password)
+            {
+
+                PasswordException ex = new PasswordException(string.Format("Неправильний пароль {0}", wifi2.name));
+
+                throw ex;
+            }
+            else if (choice == 3 && yourPassword != wifi3.password)
+            {
+
+                PasswordException ex = new PasswordException(string.Format("Неправильний пароль {0}", wifi2.name));
+
+                throw ex;
+            }
+            else
+            {
+                helper.Notify += HandleTextWritten;
+                helper.Text($"{helper.name}: Тепер можемо працювати далі.");
+                helper.Notify -= HandleTextWritten;
+            }
+            
+        }
+
+        public void CreateAccount()
+        {
+            helper.Notify += HandleTextWritten;
+            helper.Text($"{helper.name}: Cтворіть аккаунт для подальшого користуванням дзеркалом.");
+            helper.Notify -= HandleTextWritten;
+            Console.WriteLine("=====================================================================================");
+            Console.Write("Введіть ім'я: ");
+            account.name = Console.ReadLine();
+            Console.WriteLine();
+            Console.Write("Введіть прізвище: ");
+            account.surname = Console.ReadLine();
+            Console.WriteLine();
+            Console.Write("Введіть зріст: ");
+            account.height = int.Parse(Console.ReadLine());
+            Console.WriteLine();
+            Console.Write("Введіть вагу: ");
+            account.weight = double.Parse(Console.ReadLine());
+            Console.WriteLine();
+            Console.Write("Введіть вік: ");
+            account.age = int.Parse(Console.ReadLine());
+            Console.WriteLine();
+            Console.WriteLine("1)Жінка\n2)Чоловік ");
+            Console.Write("Оберіть (1) або (2): ");
+            account.sex = int.Parse(Console.ReadLine());
+            Console.WriteLine();
+            Console.WriteLine("=====================================================================================");
+            helper.Notify += HandleTextWritten;
+            helper.Text($"{helper.name}: Акаунт створено, тепер Ви можете повноцінно використовувати пристрій.");
+            helper.Notify -= HandleTextWritten;
+        }
+
+        public void NormWeight()
+        {
+            helper.Notify += HandleTextWritten;
+            helper.Text($"{helper.name}: Тут ви зможете дізнатись вашу нормальну вагу.");
+            helper.Notify -= HandleTextWritten;
+
+            double result = 0;
+            double difference = 0;
+
+            if (account.sex == 1)
+            {
+                result = (account.height-110)*1.15;
+            }
+
+            if(account.sex == 2)
+            {
+                result = (account.height - 100) * 1.15;
+            }
+
+            Console.WriteLine("Ваша нормальна вага = "+ (int)result);
+
+            if (result > account.weight)
+            {
+                difference = result - account.weight;
+
+                helper.Notify += HandleTextWritten;
+                helper.Text($"{helper.name}: Вам потрібно набрати вагу, а саме приблизно {(int)difference}.");
+                helper.Notify -= HandleTextWritten;
+            }
+
+            if (result < account.weight)
+            {
+                difference= account.weight - result;
+
+                helper.Notify += HandleTextWritten;
+                helper.Text($"{helper.name}: Вам потрібно скинути вагу, а саме приблизно {(int)difference}.");
+                helper.Notify -= HandleTextWritten;
+            }
+        }
+
+        public void Calories()
+        {
+            helper.Notify += HandleTextWritten;
+            helper.Text($"{helper.name}: Тут ви зможете дізнатись вашу норму калорій на день.");
+            helper.Notify -= HandleTextWritten;
+
+            double result = 0;
+           
+
+            if (account.sex == 1)
+            {
+                result = (9.99 * account.weight) + (6.25 * account.height) - (4.92 * account.age) - 161;
+            }
+
+            if (account.sex == 2)
+            {
+                result = (9.99 * account.weight) + (6.25 * account.height) - (4.92 * account.age) + 5;
+            }
+
+            Console.WriteLine();
+
+            helper.Notify += HandleTextWritten;
+            helper.Text($"{helper.name}: Ваша норма калорій на добу = " + (int)result);
+            helper.Notify -= HandleTextWritten;
+            
+        }
+
+        public void ChoiceHairstyle()
+        {
+            helper.Notify += HandleTextWritten;
+            helper.Text($"{helper.name}: Тут я допоможу підібрати вам зачіску.");
+            helper.Notify -= HandleTextWritten;
+
+            for (int i = 0; i <= 100; i++)
+            {
+                Console.SetCursorPosition(0, Console.CursorTop);
+                Console.Write("Сканується обличчя: " + i + "%");
+                System.Threading.Thread.Sleep(100);
+            }
+
+            Random ranGen = new Random();
+            int choice = ranGen.Next(0, 3);
+
+            Console.WriteLine();
+
+            if (choice == 0)
+            {
+                Console.WriteLine("Ваша форма обличчя - квадрат\nНайкращі зачіски для вас:");
+                Console.WriteLine("1)Драбинка\n2)Каскад\n3)Боб");
+            }
+            if (choice == 1)
+            {
+                Console.WriteLine("Ваша форма обличчя - овал\nНайкращі зачіски для вас:");
+                Console.WriteLine("1)Піксі\n2)Середнє каре\n3)Боб");
+            }
+            if (choice == 2)
+            {
+                Console.WriteLine("Ваша форма обличчя - круг \nНайкращі зачіски для вас:");
+                Console.WriteLine("1)Довге волосся\n2)Довге Каре\n3)Боб");
+            }
+
+          
+        } 
+
+        public void TestTemp()
+        {
+            helper.Notify += HandleTextWritten;
+            helper.Text($"{helper.name}: Тут дзеркало може виміряти вашу температуру.");
+            helper.Notify -= HandleTextWritten;
+
+            for (int i = 0; i <= 100; i++)
+            {
+                Console.SetCursorPosition(0, Console.CursorTop);
+                Console.Write("Йде вимір температури: " + i + "%");
+                System.Threading.Thread.Sleep(100);
+            }
+
+            Random ranGen = new Random();
+            double temp = ranGen.Next(34, 41);
+
+            Console.WriteLine();
+
+            if (temp < 36.2)
+            {
+                helper.Notify += HandleTextWritten;
+                helper.Text($"{helper.name}: Ваша температура = {temp}.\n Занизька, з'їжте шоколадку!");
+                helper.Notify -= HandleTextWritten;
+            }
+            else if (temp>37&&temp<38)
+            {
+                helper.Notify += HandleTextWritten;
+                helper.Text($"{helper.name}: Ваша температура = {temp}.\n Підвищена, краще записатися до лікаря!");
+                helper.Notify -= HandleTextWritten;
+            }
+            else
+            {
+                helper.Notify += HandleTextWritten;
+                helper.Text($"{helper.name}: Ваша температура = {temp}.\n Висока!");
+                helper.Notify -= HandleTextWritten;
+            }
+
+        }
+
+        public void VideoChat()
+        {
+            helper.Notify += HandleTextWritten;
+            helper.Text($"{helper.name}: Тепер ви можете поговорити зі своїми друзями!");
+            helper.Notify -= HandleTextWritten;
+
+            List <string> friends = new List<string>() { "Саша", "Влада", "Даша", "Олексій"};
+
+            Console.WriteLine("Список контактів ");
+            Console.WriteLine("=============================================");
+            Console.WriteLine("1)" + friends[0]);
+            Console.WriteLine("2)" + friends[1]);
+            Console.WriteLine("3)" + friends[2]);
+            Console.WriteLine("4)" + friends[3]);
+
+            Console.Write("Ваш вибір:");
+            int choice = int.Parse(Console.ReadLine());
+
+            for(int i = 0; i <= 100; i++)
+            {
+                Console.SetCursorPosition(0, Console.CursorTop);
+                Console.Write("Підключення готове на " + i+"%");
+                System.Threading.Thread.Sleep(100);
+            }
+            Console.WriteLine();
+
+            Console.WriteLine("Підключення завершено! Приємної розмови з користувачем " + friends[choice-1]);
+
+        }
+
+        public void Display()
+        {
+            Console.Write("Введіть ім'я для вашого разумного дзеркала: ");
+            name = Console.ReadLine();
+            Console.WriteLine("=============================================");
+            Console.WriteLine("Модель: "+model);
+            Console.WriteLine("Iм'я: "+ name);
+            Console.WriteLine("=============================================");
+        }
+
+        public void HandleTextWritten(string text)
+        {
+            Console.WriteLine(text);
+        }
+    }
+}
+
+//Battery.cs
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace OOP_Lab_6
+{
+    internal class Battery
+    {
+        private int Charge;
+
+        public Battery()
+        {
+            Charge = 100;
+        }
+
+        public int charge
+        {
+            get { return Charge; }
+            set { Charge = value; }
+        }
+    }
+}
+
+//Account.cs
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace OOP_Lab_6
+{
+    internal class Account
+    {
+        private string Name;
+        private string Surname;
+        private int Height;
+        private double Weight;
+        private int Age;
+        private int Sex;
+
+        public Account()
+        {
+            Name = "";
+            Surname = "";
+            Height = 0;
+            Weight = 0;
+            Age = 0;
+            Sex = 0;
+        }
+
+        public string name
+        {
+            get { return Name; }
+            set { Name = value; }
+        }
+
+        public string surname
+        {
+            get { return Surname; }
+            set { Surname = value; }
+        }
+
+        public int height
+        {
+            get { return Height; }
+            set { Height = value; }
+        }
+
+        public double weight
+        {
+            get { return Weight; }
+            set { Weight = value; }
+        }
+
+        public int age
+        {
+            get { return Age; }
+            set { Age = value; }
+        }
+
+        public int sex
+        {
+            get { return Sex; }
+            set { Sex = value; }
+        }
+    }
+}
+
+//PasswordException.cs
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace OOP_Lab_6
+{
+    internal class PasswordException : ApplicationException
+    {
+        public PasswordException(string message):base(message)
+        {
+            
+        }
+
+        public override string Message
+        {
+            get
+            {
+                return string.Format("Повідомлення про помилку: {0}", base.Message);
+            }
+        }
+    }
+}
+
+//SmartHelper.cs
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace OOP_Lab_6
+{
+    internal class SmartHelper 
+    {
+        private string Name;
+        public SmartHelper()
+        {
+            Name = "Siri";
+            
+        }
+
+        public string name
+        {
+            get { return Name; }
+            set { Name = value; }
+        }
+
+        public delegate void SmartHelperT(string message);
+        public event SmartHelperT Notify;
+
+       public void Text(string message)
+       {
+            Notify?.Invoke(message);
+       } 
+
+        public void Display()
+        {
+            Console.WriteLine($"Привіт! Мене звуть {name}! Я ваш голосовий модуль, якій буде поруч з вами.");
+        }
+    }
+}
+
+//Webcam.cs
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace OOP_Lab_6
+{
+    internal class Webcam : SmartMirror
+    {
+        private string Password;
+        private bool Perfomance;
+        public Webcam(Battery battery) : base(battery)
+        {
+            Password = "123";
+            Perfomance = false;
+        }
+
+        public string password
+        {
+            get { return Password; }
+        }
+
+        public bool perfomance
+        {
+            get { return Perfomance; }
+            set { Perfomance = value; }
+        }
+
+        public void CheckPassword()
+        {
+            Console.Write($"Введіть пароль: ");
+            string yourPassword = Console.ReadLine();
+
+
+            if (yourPassword != password)
+            {
+
+                PasswordException ex = new PasswordException(string.Format("Неправильний пароль {0}", name));
+
+                throw ex;
+            }
+        }
+    }
+}
+
+
+//Wifi.cs
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace OOP_Lab_6
+{
+    internal class Wifi
+    {
+        private string Name;
+        private string Password;
+
+        public Wifi(string name,string password)
+        {
+            Name = name;
+            Password = password;
+        }
+
+        public string name
+        {
+            get { return Name; }
+            set { Name = value; }   
+        }
+
+        public string password
+        {
+            get { return Password; }
+            set { Password = value; }
+        }
+        
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+               
+            </code>
+        </pre>
+    </details>
+    </div>
+	
+	
+	
+	
+	 <div class="content"> 
+        <p><h2 align="center">Виконання програми</h2></p> 
+		<p><h4 align="center">Виконання завдання №2</h4></p>           
+            <p><img src="laba6/result1.1.png"><p>
+			<p><img src="laba6/result1.2.png"><p>
+			<p><img src="laba6/result1.3.png"><p>
+			<p><img src="laba6/result1.4.png"><p>
+			<p><img src="laba6/result1.5.png"><p>
+			<p><img src="laba6/result1.6.png"><p>
+        <p><h4 align="center">Виконання завдання №3</h4></p>           
+            <p><img src="laba6/result2.1.png"><p>
+            <p><h4 align="center">Виконання завдання №4</h4></p>              
+			<p><img src="laba6/result3.1.png"><p>
+			<p><img src="laba6/result3.2.png"><p>
+			<p><img src="laba6/result3.3.png"><p>
+			 <p><h4 align="center">Виконання завдання №5</h4></p>                         
+            <p><img src="laba6/result4.1.png"><p> 
+			
+			
+			
+                  
+    </div>
+    
+    
+    
+    <div class="content">  
+        <p><h2 align="center">Перевірка достовірності</h2></p>
+		<p><h3 align="center">Результат</h3></p> 
+       <p><img src="laba6/resultfor.png"><p> 
+	   <p><img src="laba6/resultfor1.png"><p> 
+	   <p><img src="laba6/resultfor2.png"><p> 
+<p><h3 align="center">Норма ваги</h3></p>       		
+        <p><img src="laba6/perevirka1.png"><p> 
+		<p><h3 align="center">Норма калорій на добу</h3></p>       		
+        <p><img src="laba6/perevirka2.png"><p> 
+		 
+		 
+		 
+    </div>
+    
+    
+                <div class="content">
+                    <p><h2 align="center">Висновок</h2></p>
+                <p>Перевантаження методів - це потужний інструмент у програмуванні об'єктно-орієнтованих мов. Це дозволяє перевизначати функціональність, що визначена в базовому класі, зберігаючи при цьому рівень абстракції та розширюючи функціональність об'єкта в похідному класі. Ми реалізували це в різних методах нашого консольного застосунку.
+
+Перевантаження бінарних та унарних операторів - це додатковий механізм для спрощення роботи з об'єктами. Це дозволяє визначити функціональність операцій для відповідних класів, що дозволяє роботу з ними на звичайний спосіб. На основі цього в нашій програмі ми можемо порівнювати площі різних об'єктів або змінити значення координатів, відповідно і площі фігур теж.
+
+Щодо індексаторів, то вони дозволяють забезпечувати доступ до масиву об'єктів як до єдиного об'єкту. Це значно спрощує роботу з масивами та дозволяє забезпечити їх інкапсуляцію та контроль доступу. Завдяки цьому ми можемо обрати кількість екземплярів класу "Кола" та вивести всі їх значення у консоль.
+
+                </p>
+                </div>
+            </div>
+		
+
+
+	</body>
+
+
+
+</html>
